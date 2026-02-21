@@ -219,7 +219,7 @@
             </select>
           </div>
           <div class="field">
-            <label for="dtl">구/군 (선택)</label>
+            <label for="dtl">구/군</label>
             <select id="dtl">
               <option value="">구/군 선택</option>
             </select>
@@ -350,6 +350,10 @@
           return checked ? checked.value : "keyword";
         }
 
+        function isSeoulRegion(region) {
+          return !!(region && region.code === "11");
+        }
+
         function setFlowVisible(id, visible) {
           const el = $(id);
           if (!el) return;
@@ -395,6 +399,7 @@
         function updateSearchButtonState() {
           const mode = getSearchMode();
           const region = selectedByIndex(regionRows, $("region"));
+          const dtl = selectedByIndex(dtlRows, $("dtl"));
           const isbnRaw = String(($("isbnInput") && $("isbnInput").value) || "").trim();
           const keywordRaw = String(($("keywordInput") && $("keywordInput").value) || "").trim();
           const selectedBook = selectedByIndex(bookRows, $("bookSelect"));
@@ -404,6 +409,8 @@
           let reason = "";
           if (!region) {
             reason = "시/도를 선택해 주세요.";
+          } else if (!isSeoulRegion(region) && !dtl) {
+            reason = "구/군을 선택해 주세요.";
           } else if (mode === "isbn") {
             if (!isbnRaw) reason = "ISBN을 입력하면 검색할 수 있습니다.";
           } else {
@@ -476,6 +483,7 @@
           const region = selectedByIndex(regionRows, $("region"));
           const dtl = selectedByIndex(dtlRows, $("dtl"));
           if (!region) return alert("시/도를 선택하세요.");
+          if (!isSeoulRegion(region) && !dtl) return alert("구/군을 선택하세요.");
 
           setLoading($("searchBtn"), true, getSearchButtonLabel());
           safeMeta("");

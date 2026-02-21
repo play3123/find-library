@@ -16,6 +16,7 @@ const LIBCFG = {
   REQUEST_TIMEOUT_MS: 20000,
   MAX_LIB_SEARCH_PAGES: 50
 };
+const SEOUL_REGION_CODE = "11";
 
 const xmlParser = new XMLParser({
   ignoreAttributes: false,
@@ -122,6 +123,9 @@ app.post("/api/search", async (req, res) => {
 
     if (!isbn13) return res.status(400).json({ error: "isbn13 is required" });
     if (!regionCode) return res.status(400).json({ error: "regionCode is required" });
+    if (regionCode !== SEOUL_REGION_CODE && !dtlCode) {
+      return res.status(400).json({ error: "dtlCode is required for non-Seoul regions" });
+    }
 
     const libs = await fetchAllLibrariesByBook(isbn13, regionCode, dtlCode);
     const enriched = await enrichLibrariesWithAvailability(libs, isbn13);
