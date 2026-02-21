@@ -1,0 +1,831 @@
+﻿<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>대출가능 도서관 검색</title>
+    <style>
+      :root {
+        --bg: #f2f6f7;
+        --card: #ffffff;
+        --ink: #16323f;
+        --muted: #5e7782;
+        --line: #d6e0e4;
+        --accent: #0d7a78;
+        --accent2: #0a5f66;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 20% 0%, #e6f6f3, var(--bg) 42%);
+      }
+      .wrap { max-width: 1140px; margin: 24px auto; padding: 0 14px; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 6px 20px rgba(21, 49, 64, 0.06);
+      }
+      h1 { margin: 0 0 8px; font-size: 24px; }
+      .step-title {
+        margin: 14px 0 8px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .subhint {
+        margin: 6px 0 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .mode-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .mode-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 40px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0 10px;
+        color: var(--ink);
+        background: #f8fbfc;
+      }
+      .mode-option input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        flex: 0 0 auto;
+      }
+      .flow-hidden { display: none !important; }
+      [hidden] { display: none !important; }
+      .action-hint {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .grid-isbn {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .grid-keyword {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 2fr auto;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .grid-region {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .field label {
+        display: block;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      input, select, button {
+        width: 100%;
+        height: 40px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0 10px;
+        font-size: 14px;
+      }
+      button {
+        color: #fff;
+        border: 0;
+        cursor: pointer;
+        font-weight: 700;
+        background: linear-gradient(120deg, var(--accent), var(--accent2));
+      }
+      button:disabled { opacity: 0.55; cursor: wait; }
+
+      .map-wrap {
+        margin: 8px 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #eef3f5;
+      }
+      .map-head {
+        padding: 8px 10px;
+        font-size: 13px;
+        color: var(--muted);
+        border-bottom: 1px solid var(--line);
+        background: #f8fbfc;
+      }
+      #map { width: 100%; height: 360px; }
+      .map-status {
+        padding: 8px 10px;
+        font-size: 12px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        background: #f8fbfc;
+      }
+
+      .meta { margin: 10px 0 0; color: var(--muted); font-size: 13px; }
+      .table-wrap { margin-top: 12px; overflow: auto; }
+      table { width: 100%; border-collapse: collapse; min-width: 920px; }
+      th, td {
+        border-bottom: 1px solid var(--line);
+        padding: 9px 8px;
+        text-align: left;
+        font-size: 13px;
+      }
+      th { position: sticky; top: 0; background: #edf5f8; z-index: 1; }
+      @media (max-width: 900px) {
+        .mode-grid, .grid-isbn, .grid-keyword, .grid-2, .grid-region { grid-template-columns: 1fr; }
+        #map { height: 300px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>대출가능 도서관 검색</h1>
+
+        <div class="step-title">1) 검색 도서 선택</div>
+        <div class="mode-grid" role="radiogroup" aria-label="검색 방식">
+          <label class="mode-option" for="modeKeyword">
+            <input type="radio" id="modeKeyword" name="searchMode" value="keyword" checked />
+            도서명/저자로 검색
+          </label>
+          <label class="mode-option" for="modeIsbn">
+            <input type="radio" id="modeIsbn" name="searchMode" value="isbn" />
+            ISBN으로 바로 검색
+          </label>
+        </div>
+        <p id="modeHint" class="subhint"></p>
+
+        <div id="isbnFlow" class="grid-isbn flow-hidden">
+          <div class="field">
+            <label for="isbnInput">ISBN</label>
+            <input id="isbnInput" placeholder="예: 979..." />
+          </div>
+        </div>
+
+        <div id="keywordFlow" class="grid-keyword">
+          <div class="field">
+            <label for="keywordInput">도서명/저자 키워드</label>
+            <input id="keywordInput" placeholder="예: 해리포터, 토지 박경리" />
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button id="findBtn" type="button">도서 후보 조회</button>
+          </div>
+        </div>
+
+        <div id="candidateFlow">
+          <div class="grid-2">
+            <div class="field">
+              <label for="bookSelect">후보 도서 선택</label>
+              <select id="bookSelect">
+                <option value="">후보 도서 선택</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>&nbsp;</label>
+              <button id="clearCandidateBtn" type="button">후보 선택 초기화</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-title">2) 지역 선택</div>
+        <div class="grid-region">
+          <div class="field">
+            <label for="region">시/도</label>
+            <select id="region">
+              <option value="">시/도 선택</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="dtl">구/군 (선택)</label>
+            <select id="dtl">
+              <option value="">구/군 선택</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button id="searchBtn" type="button">검색</button>
+          </div>
+        </div>
+        <p id="searchHint" class="action-hint"></p>
+
+        <div class="map-wrap">
+          <div class="map-head">지도 (검색 결과 도서관 위치)</div>
+          <div id="map"></div>
+          <div id="mapStatus" class="map-status">지도 준비 중...</div>
+        </div>
+
+        <div id="meta" class="meta"></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>도서관명</th>
+                <th>대출가능여부</th>
+                <th>주소</th>
+                <th>전화</th>
+                <th>홈페이지</th>
+                <th>도서관코드</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="./config.js"></script>
+    <script>
+      (function () {
+        const $ = (id) => document.getElementById(id);
+        const API_BASE = String((window.APP_CONFIG && window.APP_CONFIG.API_BASE) || "").trim().replace(/\/+$/, "");
+
+        let regionRows = [];
+        let dtlRows = [];
+        let bookRows = [];
+        let lastCandidateKeyword = "";
+
+        function esc(v) {
+          return String(v == null ? "" : v).replace(/[&<>"']/g, (ch) => (
+            { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[ch]
+          ));
+        }
+
+        function safeMeta(msg) {
+          const meta = $("meta");
+          if (meta) meta.textContent = msg || "";
+        }
+
+        function ensureApiBase() {
+          if (!API_BASE || /YOUR-RENDER-SERVICE/i.test(API_BASE)) {
+            throw new Error("docs/config.js의 API_BASE를 Render 주소로 바꿔주세요.");
+          }
+          return API_BASE;
+        }
+
+        async function request(path, options) {
+          const base = ensureApiBase();
+          const reqOptions = options || {};
+          const headers = Object.assign({}, reqOptions.headers || {});
+          if (reqOptions.body && !headers["Content-Type"]) {
+            headers["Content-Type"] = "application/json";
+          }
+
+          let res;
+          try {
+            res = await fetch(base + path, Object.assign({}, reqOptions, { headers }));
+          } catch (error) {
+            throw new Error("네트워크/CORS 오류가 발생했습니다. Render URL과 ALLOWED_ORIGIN을 확인하세요.");
+          }
+
+          const text = await res.text();
+          let data = {};
+          if (text) {
+            try {
+              data = JSON.parse(text);
+            } catch (error) {
+              data = {};
+            }
+          }
+
+          if (!res.ok) {
+            throw new Error((data && data.error) || `요청 실패(HTTP ${res.status})`);
+          }
+
+          return data;
+        }
+
+        window.appApiGet = function (path) {
+          return request(path, { method: "GET" });
+        };
+
+        function setSelectOptions(select, rows, placeholder, labelFn) {
+          if (!select) return;
+          const opts = ['<option value="">' + esc(placeholder) + '</option>']
+            .concat(rows.map((r, i) => `<option value="${i}">${esc(labelFn(r))}</option>`))
+            .join("");
+          select.innerHTML = opts;
+        }
+
+        function selectedByIndex(rows, selectEl) {
+          if (!selectEl || selectEl.value === "") return null;
+          const i = Number(selectEl.value);
+          return Number.isFinite(i) && rows[i] ? rows[i] : null;
+        }
+
+        function setLoading(el, loading, label) {
+          if (!el) return;
+          el.disabled = loading;
+          el.textContent = loading ? "처리중..." : label;
+        }
+
+        function getSearchButtonLabel() {
+          return "검색";
+        }
+
+        function getSearchMode() {
+          const checked = document.querySelector('input[name="searchMode"]:checked');
+          return checked ? checked.value : "keyword";
+        }
+
+        function setFlowVisible(id, visible) {
+          const el = $(id);
+          if (!el) return;
+          el.classList.toggle("flow-hidden", !visible);
+          el.hidden = !visible;
+        }
+
+        function updateSearchModeUI() {
+          const mode = getSearchMode();
+          const isIsbn = mode === "isbn";
+
+          const isbnInput = $("isbnInput");
+          const keywordInput = $("keywordInput");
+          const findBtn = $("findBtn");
+          const bookSelect = $("bookSelect");
+          const clearBtn = $("clearCandidateBtn");
+          const modeHint = $("modeHint");
+          const searchBtn = $("searchBtn");
+
+          setFlowVisible("isbnFlow", isIsbn);
+          setFlowVisible("keywordFlow", !isIsbn);
+          setFlowVisible("candidateFlow", !isIsbn);
+
+          if (isbnInput) isbnInput.disabled = !isIsbn;
+          if (keywordInput) keywordInput.disabled = isIsbn;
+          if (findBtn) findBtn.disabled = isIsbn;
+          if (bookSelect) bookSelect.disabled = isIsbn;
+          if (clearBtn) clearBtn.disabled = isIsbn;
+
+          if (modeHint) {
+            modeHint.textContent = isIsbn
+              ? "검색할 도서의 정확한 ISBN을 입력하여 도서를 검색할 수 있습니다."
+              : "키워드를 입력한 뒤 후보 조회를 하고, 정확한 도서를 선택해야 검색할 수 있습니다.";
+          }
+
+          if (searchBtn && searchBtn.textContent !== "처리중...") {
+            searchBtn.textContent = getSearchButtonLabel();
+          }
+
+          updateSearchButtonState();
+        }
+
+        function updateSearchButtonState() {
+          const mode = getSearchMode();
+          const region = selectedByIndex(regionRows, $("region"));
+          const isbnRaw = String(($("isbnInput") && $("isbnInput").value) || "").trim();
+          const keywordRaw = String(($("keywordInput") && $("keywordInput").value) || "").trim();
+          const selectedBook = selectedByIndex(bookRows, $("bookSelect"));
+          const btn = $("searchBtn");
+          const hint = $("searchHint");
+
+          let reason = "";
+          if (!region) {
+            reason = "시/도를 선택해 주세요.";
+          } else if (mode === "isbn") {
+            if (!isbnRaw) reason = "ISBN을 입력하면 검색할 수 있습니다.";
+          } else {
+            if (!keywordRaw) reason = "도서명/저자 키워드를 입력해 주세요.";
+            else if (keywordRaw !== lastCandidateKeyword) reason = "도서 후보 조회를 다시 실행해 주세요.";
+            else if (!bookRows.length) reason = "도서 후보 조회를 먼저 실행해 주세요.";
+            else if (!selectedBook) reason = "후보 도서를 선택해 주세요.";
+          }
+
+          const ready = !reason;
+          if (btn) btn.disabled = !ready;
+          if (hint) hint.textContent = ready ? "" : reason;
+        }
+
+        function notifyMapRows(rows) {
+          try {
+            if (typeof window.renderLibraryMap === "function") {
+              window.renderLibraryMap(rows || []);
+            } else {
+              window.__pendingLibraryRows = rows || [];
+            }
+          } catch (e) {
+            // no-op
+          }
+        }
+
+        function renderRows(rows) {
+          const body = $("tbody");
+          if (!body) return;
+          if (!rows || rows.length === 0) {
+            body.innerHTML = '<tr><td colspan="6">검색 결과가 없습니다.</td></tr>';
+            return;
+          }
+          body.innerHTML = rows.map(r => `
+            <tr>
+              <td>${esc(r.libName)}</td>
+              <td>${esc(r.loanAvailable)}</td>
+              <td>${esc(r.address)}</td>
+              <td>${esc(r.tel)}</td>
+              <td>${r.homepage ? `<a href="${esc(r.homepage)}" target="_blank" rel="noopener">링크</a>` : ""}</td>
+              <td>${esc(r.libCode)}</td>
+            </tr>
+          `).join("");
+        }
+
+        async function loadRegions() {
+          try {
+            const data = await request("/api/regions", { method: "GET" });
+            regionRows = data.rows || [];
+            setSelectOptions($("region"), regionRows, "시/도 선택", r => r.name);
+            setSelectOptions($("dtl"), [], "구/군 선택", r => r.name);
+            updateSearchButtonState();
+          } catch (error) {
+            safeMeta("지역 목록 로드 실패: " + error.message);
+          }
+        }
+
+        async function loadDtls(regionName) {
+          try {
+            const data = await request("/api/dtls?regionName=" + encodeURIComponent(regionName), { method: "GET" });
+            dtlRows = data.rows || [];
+            setSelectOptions($("dtl"), dtlRows, "구/군 선택", r => r.name);
+            updateSearchButtonState();
+          } catch (error) {
+            safeMeta("구/군 목록 로드 실패: " + error.message);
+          }
+        }
+
+        async function runLibrarySearch(target) {
+          const region = selectedByIndex(regionRows, $("region"));
+          const dtl = selectedByIndex(dtlRows, $("dtl"));
+          if (!region) return alert("시/도를 선택하세요.");
+
+          setLoading($("searchBtn"), true, getSearchButtonLabel());
+          safeMeta("");
+          renderRows([]);
+          notifyMapRows([]);
+
+          try {
+            const res = await request("/api/search", {
+              method: "POST",
+              body: JSON.stringify({
+                query: target.bookname || "",
+                isbn13: target.isbn13,
+                regionName: region.name,
+                regionCode: region.code,
+                dtlName: dtl ? dtl.name : "",
+                dtlCode: dtl ? dtl.code : ""
+              })
+            });
+
+            const title = target.bookname || "(ISBN 직접검색)";
+            const dtlLabel = dtl ? dtl.code : "ALL";
+            safeMeta(`선택도서: ${title} | ISBN13: ${res.isbn13} | 지역: ${region.code}/${dtlLabel} | 결과: ${res.count}건`);
+            renderRows(res.rows || []);
+            notifyMapRows(res.rows || []);
+          } catch (error) {
+            safeMeta("도서관 검색 실패: " + error.message);
+          } finally {
+            setLoading($("searchBtn"), false, getSearchButtonLabel());
+            updateSearchButtonState();
+          }
+        }
+
+        try {
+          document.querySelectorAll('input[name="searchMode"]').forEach((el) => {
+            el.addEventListener("change", () => {
+              updateSearchModeUI();
+              safeMeta("");
+            });
+          });
+
+          $("region").addEventListener("change", async () => {
+            const region = selectedByIndex(regionRows, $("region"));
+            dtlRows = [];
+            setSelectOptions($("dtl"), [], "구/군 선택", r => r.name);
+            if (region) await loadDtls(region.name);
+            updateSearchButtonState();
+          });
+
+          $("findBtn").addEventListener("click", async () => {
+            if (getSearchMode() !== "keyword") return;
+            const keyword = $("keywordInput").value.trim();
+            if (!keyword) return alert("도서명/저자 키워드를 입력하세요.");
+
+            setLoading($("findBtn"), true, "도서 후보 조회");
+            safeMeta("");
+            bookRows = [];
+            lastCandidateKeyword = "";
+            setSelectOptions($("bookSelect"), [], "후보 없음", r => r.bookname);
+
+            try {
+              const data = await request("/api/books/candidates", {
+                method: "POST",
+                body: JSON.stringify({ query: keyword })
+              });
+              bookRows = data.rows || [];
+              lastCandidateKeyword = keyword;
+              setSelectOptions(
+                $("bookSelect"),
+                bookRows,
+                "후보 도서 선택",
+                r => `${r.bookname} | ${r.authors || "-"} | ${r.isbn13 || "-"}`
+              );
+              safeMeta(`도서 후보 ${bookRows.length}건 조회됨`);
+            } catch (error) {
+              safeMeta("도서 후보 조회 실패: " + error.message);
+            } finally {
+              setLoading($("findBtn"), false, "도서 후보 조회");
+              updateSearchButtonState();
+            }
+          });
+
+          $("clearCandidateBtn").addEventListener("click", () => {
+            $("bookSelect").value = "";
+            safeMeta("후보 선택을 초기화했습니다.");
+            updateSearchButtonState();
+          });
+
+          $("searchBtn").addEventListener("click", async () => {
+            const mode = getSearchMode();
+            if (mode === "isbn") {
+              const isbnRaw = $("isbnInput").value.trim();
+              if (!isbnRaw) {
+                alert("ISBN을 입력해 주세요.");
+                return;
+              }
+
+              setLoading($("searchBtn"), true, getSearchButtonLabel());
+              safeMeta("ISBN 확인 중...");
+              try {
+                const resolved = await request("/api/books/resolve-isbn", {
+                  method: "POST",
+                  body: JSON.stringify({ queryOrIsbn: isbnRaw })
+                });
+                if (!resolved || !resolved.isbn13) {
+                  safeMeta("ISBN을 확인하지 못했습니다. 올바른 ISBN을 입력해 주세요.");
+                  return;
+                }
+                await runLibrarySearch({
+                  bookname: resolved.bookname || "",
+                  isbn13: resolved.isbn13
+                });
+              } catch (error) {
+                safeMeta("ISBN 확인 실패: " + error.message);
+              } finally {
+                setLoading($("searchBtn"), false, getSearchButtonLabel());
+                updateSearchButtonState();
+              }
+              return;
+            }
+
+            const book = selectedByIndex(bookRows, $("bookSelect"));
+            if (!book) {
+              alert("도서 후보를 조회하고 정확한 도서를 선택하세요.");
+              return;
+            }
+            await runLibrarySearch(book);
+          });
+
+          $("isbnInput").addEventListener("input", updateSearchButtonState);
+          $("keywordInput").addEventListener("input", () => {
+            const current = $("keywordInput").value.trim();
+            if (current !== lastCandidateKeyword) {
+              bookRows = [];
+              setSelectOptions($("bookSelect"), [], "후보 도서 선택", r => r.bookname);
+              $("bookSelect").value = "";
+            }
+            updateSearchButtonState();
+          });
+          $("bookSelect").addEventListener("change", updateSearchButtonState);
+          $("dtl").addEventListener("change", updateSearchButtonState);
+
+          setSelectOptions($("region"), [], "시/도 선택", r => r.name);
+          setSelectOptions($("dtl"), [], "구/군 선택", r => r.name);
+          setSelectOptions($("bookSelect"), [], "후보 도서 선택", r => r.bookname);
+          updateSearchModeUI();
+
+          if (!API_BASE || /YOUR-RENDER-SERVICE/i.test(API_BASE)) {
+            safeMeta("설정 필요: docs/config.js의 API_BASE를 Render 주소로 변경하세요.");
+          } else {
+            safeMeta("초기화 완료");
+          }
+          loadRegions();
+        } catch (error) {
+          safeMeta("초기화 오류: " + (error && error.message ? error.message : error));
+        }
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const $ = (id) => document.getElementById(id);
+
+        function status(msg) {
+          const el = $("mapStatus");
+          if (el) el.textContent = msg;
+        }
+
+        function originInfo() {
+          try {
+            return window.location && window.location.origin ? window.location.origin : "(origin-unknown)";
+          } catch (e) {
+            return "(origin-unknown)";
+          }
+        }
+
+        let map = null;
+        let geocoder = null;
+        let mapReady = false;
+        let markers = [];
+        let infoWindows = [];
+        let seq = 0;
+        let key = "";
+        let markerBlue = null;
+        let markerRed = null;
+
+        function clearMap() {
+          markers.forEach((m) => m.setMap(null));
+          infoWindows.forEach((iw) => iw.close());
+          markers = [];
+          infoWindows = [];
+        }
+
+        function makeMarkerImage(colorHex) {
+          const svg =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="40" viewBox="0 0 28 40">' +
+            '<path fill="' + colorHex + '" d="M14 0C6.27 0 0 6.27 0 14c0 9.8 14 26 14 26s14-16.2 14-26C28 6.27 21.73 0 14 0z"/>' +
+            '<circle cx="14" cy="14" r="6.2" fill="#ffffff"/>' +
+            '</svg>';
+
+          const src = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+          return new kakao.maps.MarkerImage(
+            src,
+            new kakao.maps.Size(28, 40),
+            { offset: new kakao.maps.Point(14, 40) }
+          );
+        }
+
+        function getMarkerImage(row) {
+          if (!markerBlue || !markerRed) {
+            markerBlue = makeMarkerImage("#2f6bff");
+            markerRed = makeMarkerImage("#e84d4d");
+          }
+          const loan = String((row && row.loanAvailable) || "").trim().toUpperCase();
+          return loan === "Y" ? markerBlue : markerRed;
+        }
+
+        function geocode(address, cb) {
+          if (!geocoder || !address) return cb(null);
+          geocoder.addressSearch(address, function (result, st) {
+            if (!result || !result.length) return cb(null);
+            if (st !== kakao.maps.services.Status.OK) return cb(null);
+            cb({ lat: Number(result[0].y), lng: Number(result[0].x) });
+          });
+        }
+
+        function renderRowsOnMap(rows) {
+          if (!mapReady || !map || !rows) return;
+          const mySeq = ++seq;
+          clearMap();
+
+          if (!rows.length) {
+            status("검색 결과가 없어 지도에 표시할 항목이 없습니다.");
+            return;
+          }
+
+          status("주소를 좌표로 변환 중...");
+
+          const points = [];
+          let i = 0;
+          (function next() {
+            if (mySeq !== seq) return;
+            if (i >= rows.length) return finish();
+            const row = rows[i++];
+            geocode(row.address || "", function (p) {
+              if (mySeq !== seq) return;
+              if (p) points.push({ row: row, lat: p.lat, lng: p.lng });
+              next();
+            });
+          })();
+
+          function finish() {
+            if (!points.length) {
+              status("좌표 변환 결과가 없어 지도에 표시할 수 없습니다.");
+              return;
+            }
+            const bounds = new kakao.maps.LatLngBounds();
+            points.forEach(function (p) {
+              const pos = new kakao.maps.LatLng(p.lat, p.lng);
+              bounds.extend(pos);
+
+              const marker = new kakao.maps.Marker({
+                position: pos,
+                map: map,
+                image: getMarkerImage(p.row)
+              });
+
+              const iw = new kakao.maps.InfoWindow({
+                content: '<div style="padding:6px 8px;font-size:12px;">' + p.row.libName + '</div>'
+              });
+
+              kakao.maps.event.addListener(marker, "click", function () {
+                infoWindows.forEach(function (x) { x.close(); });
+                iw.open(map, marker);
+              });
+
+              markers.push(marker);
+              infoWindows.push(iw);
+            });
+
+            map.setBounds(bounds);
+            status("지도에 " + points.length + "개 도서관을 표시했습니다.");
+          }
+        }
+
+        window.renderLibraryMap = function (rows) {
+          if (!mapReady) {
+            window.__pendingLibraryRows = rows || [];
+            return;
+          }
+          renderRowsOnMap(rows || []);
+        };
+
+        function initMap() {
+          if (!key) {
+            status("KAKAO_JS_KEY가 없어 지도 기능이 비활성화되었습니다. origin=" + originInfo());
+            return;
+          }
+
+          status("지도 스크립트 로드 시도 중... origin=" + originInfo());
+          const s = document.createElement("script");
+          s.src = "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&libraries=services&appkey=" + encodeURIComponent(key);
+          s.async = true;
+
+          s.onload = function () {
+            if (!window.kakao || !kakao.maps) {
+              status("지도 SDK 로드 실패. 카카오 콘솔 도메인에 origin 등록 필요: " + originInfo());
+              return;
+            }
+
+            kakao.maps.load(function () {
+              try {
+                map = new kakao.maps.Map($("map"), {
+                  center: new kakao.maps.LatLng(37.5665, 126.9780),
+                  level: 7
+                });
+                geocoder = new kakao.maps.services.Geocoder();
+                mapReady = true;
+                status("지도가 준비되었습니다.");
+                if (window.__pendingLibraryRows) {
+                  renderRowsOnMap(window.__pendingLibraryRows);
+                }
+              } catch (error) {
+                status("지도 초기화 실패: " + (error && error.message ? error.message : error));
+              }
+            });
+          };
+
+          s.onerror = function () {
+            status("지도 스크립트를 불러오지 못했습니다. 카카오 콘솔 도메인에 origin 등록 필요: " + originInfo());
+          };
+
+          document.head.appendChild(s);
+        }
+
+        async function loadMapConfig() {
+          try {
+            if (typeof window.appApiGet !== "function") {
+              status("지도 설정 로드 실패: API 초기화 대기");
+              return;
+            }
+            const cfg = await window.appApiGet("/api/client-config");
+            key = cfg && cfg.kakaoJsKey ? String(cfg.kakaoJsKey).trim() : "";
+            initMap();
+          } catch (error) {
+            status("지도 설정 로드 실패: " + (error && error.message ? error.message : error));
+          }
+        }
+
+        loadMapConfig();
+      })();
+    </script>
+  </body>
+</html>
