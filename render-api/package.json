@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "library-info-render-api",
   "version": "1.0.0",
   "private": true,
@@ -8,7 +8,7 @@
     "start": "node server.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": "20.x"
   },
   "dependencies": {
     "cors": "^2.8.5",
