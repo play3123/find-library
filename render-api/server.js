@@ -162,10 +162,12 @@ app.use((req, res) => {
   res.status(404).json({ error: "Not Found" });
 });
 
-const port = Number(process.env.PORT || 10000);
-app.listen(port, () => {
-  console.log(`[library-info] API server listening on ${port}`);
-});
+if (require.main === module) {
+  const port = Number(process.env.PORT || 10000);
+  app.listen(port, () => {
+    console.log(`[library-info] API server listening on ${port}`);
+  });
+}
 
 function getAuthKey() {
   const key = String(process.env.DATA4LIBRARY_AUTHKEY || "").trim();
@@ -651,3 +653,5 @@ function sendError(res, error) {
   const message = error && error.message ? error.message : String(error);
   res.status(500).json({ error: message });
 }
+
+module.exports = app;
