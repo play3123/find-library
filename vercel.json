@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "/",
+      "dest": "/docs/index.html"
+    },
+    {
+      "src": "/config.js",
+      "dest": "/docs/config.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/docs/$1"
+    }
+  ]
+}

@@ -279,8 +279,8 @@
         }
 
         function ensureApiBase() {
-          if (!API_BASE || /YOUR-RENDER-SERVICE/i.test(API_BASE)) {
-            throw new Error("docs/config.js의 API_BASE를 Render 주소로 바꿔주세요.");
+          if (/YOUR-RENDER-SERVICE/i.test(API_BASE)) {
+            throw new Error("docs/config.js의 API_BASE 설정값을 확인하세요.");
           }
           return API_BASE;
         }
@@ -630,8 +630,8 @@
           setSelectOptions($("bookSelect"), [], "후보 도서 선택", r => r.bookname);
           updateSearchModeUI();
 
-          if (!API_BASE || /YOUR-RENDER-SERVICE/i.test(API_BASE)) {
-            safeMeta("설정 필요: docs/config.js의 API_BASE를 Render 주소로 변경하세요.");
+          if (/YOUR-RENDER-SERVICE/i.test(API_BASE)) {
+            safeMeta("설정 필요: docs/config.js의 API_BASE 설정값을 확인하세요.");
           } else {
             safeMeta("초기화 완료");
           }
