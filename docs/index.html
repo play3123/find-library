@@ -6,254 +6,678 @@
     <title>대출가능 도서관 검색</title>
     <style>
       :root {
-        --bg: #f2f6f7;
-        --card: #ffffff;
-        --ink: #16323f;
-        --muted: #5e7782;
-        --line: #d6e0e4;
-        --accent: #0d7a78;
-        --accent2: #0a5f66;
+        --bg: #f5f4ed;
+        --surface: #faf9f5;
+        --surface-strong: #ffffff;
+        --ink: #141413;
+        --ink-soft: #4d4c48;
+        --muted: #5e5d59;
+        --muted-soft: #87867f;
+        --line: #e8e6dc;
+        --line-soft: #f0eee6;
+        --accent: #c96442;
+        --accent-strong: #b95534;
+        --shadow: rgba(0, 0, 0, 0.05) 0 4px 24px;
+        --ring: 0 0 0 1px #d1cfc5;
       }
+
       * { box-sizing: border-box; }
+
+      html,
       body {
         margin: 0;
-        font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Inter", "Noto Sans KR", system-ui, sans-serif;
         color: var(--ink);
-        background: radial-gradient(circle at 20% 0%, #e6f6f3, var(--bg) 42%);
+        background:
+          radial-gradient(circle at 0% 0%, rgba(201, 100, 66, 0.12), transparent 24%),
+          radial-gradient(circle at 100% 0%, rgba(94, 93, 89, 0.08), transparent 18%),
+          var(--bg);
       }
-      .wrap { max-width: 1140px; margin: 24px auto; padding: 0 14px; }
-      .card {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 16px;
-        box-shadow: 0 6px 20px rgba(21, 49, 64, 0.06);
+
+      h1, h2, h3 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 500;
+        letter-spacing: -0.03em;
       }
-      h1 { margin: 0 0 8px; font-size: 24px; }
-      .step-title {
-        margin: 14px 0 8px;
-        font-size: 14px;
-        font-weight: 700;
+
+      button,
+      input,
+      select {
+        font: inherit;
       }
-      .subhint {
-        margin: 6px 0 10px;
-        color: var(--muted);
-        font-size: 12px;
+
+      .wrap {
+        width: min(1200px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 28px 0 56px;
       }
-      .mode-grid {
+
+      .hero {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 10px;
+        grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+        gap: 28px;
+        align-items: stretch;
+        margin-bottom: 28px;
       }
+
+      .hero-copy {
+        padding: 18px 0 8px;
+      }
+
+      .eyebrow,
+      .panel-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.5);
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 14px 0 0;
+        max-width: 10ch;
+        font-size: clamp(2.8rem, 6vw, 4.6rem);
+        line-height: 1.02;
+      }
+
+      .hero-copy p {
+        max-width: 58ch;
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 1.03rem;
+        line-height: 1.7;
+      }
+
+      .hero-points {
+        display: grid;
+        gap: 10px;
+        margin: 24px 0 0;
+        padding: 0;
+        list-style: none;
+        color: var(--ink-soft);
+      }
+
+      .hero-points li {
+        position: relative;
+        padding-left: 18px;
+      }
+
+      .hero-points li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 11px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .hero-aside,
+      .workspace,
+      .result-panel,
+      .controls-panel,
+      .map-wrap,
+      .table-card {
+        border: 1px solid var(--line-soft);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-aside {
+        display: grid;
+        gap: 16px;
+        padding: 20px;
+        border-radius: 28px;
+      }
+
+      .aside-note,
+      .aside-stat {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: var(--ring);
+      }
+
+      .aside-note strong,
+      .aside-stat strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 1.25rem;
+        color: var(--ink);
+      }
+
+      .aside-note p,
+      .aside-stat p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .workspace {
+        padding: 28px;
+        border-radius: 32px;
+      }
+
+      .workspace-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 18px;
+        align-items: end;
+        margin-bottom: 22px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .workspace-head h2 {
+        margin: 10px 0 0;
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        line-height: 1.08;
+      }
+
+      .workspace-head p {
+        margin: 10px 0 0;
+        max-width: 52ch;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .status-chip {
+        align-self: start;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        color: var(--ink-soft);
+        background: rgba(255, 255, 255, 0.62);
+        font-size: 13px;
+      }
+
+      .workspace-grid {
+        display: grid;
+        grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+        gap: 22px;
+      }
+
+      .controls-panel,
+      .result-panel,
+      .table-card {
+        border-radius: 24px;
+      }
+
+      .controls-panel,
+      .result-panel {
+        padding: 22px;
+      }
+
+      .panel-title {
+        margin: 10px 0 6px;
+        font-size: 1.65rem;
+        line-height: 1.18;
+      }
+
+      .panel-desc,
+      .subhint,
+      .action-hint,
+      .meta,
+      .map-status {
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .panel-desc {
+        margin: 0 0 18px;
+      }
+
+      .step-title {
+        margin: 18px 0 10px;
+        color: var(--ink-soft);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .subhint,
+      .action-hint,
+      .meta {
+        margin: 8px 0 0;
+        font-size: 13px;
+      }
+
+      .mode-grid,
+      .grid-isbn,
+      .grid-keyword,
+      .grid-2,
+      .grid-region {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .mode-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grid-isbn {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-keyword {
+        grid-template-columns: 1fr auto;
+      }
+
+      .grid-2 {
+        grid-template-columns: 2fr auto;
+      }
+
+      .grid-region {
+        grid-template-columns: 1fr 1fr auto;
+      }
+
       .mode-option {
         display: flex;
         align-items: center;
-        gap: 8px;
-        height: 40px;
+        gap: 10px;
+        min-height: 46px;
+        padding: 0 14px;
         border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 0 10px;
-        color: var(--ink);
-        background: #f8fbfc;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--ink-soft);
+        box-shadow: var(--ring);
       }
+
       .mode-option input[type="radio"] {
         width: 16px;
         height: 16px;
         margin: 0;
-        padding: 0;
-        border: 0;
-        border-radius: 50%;
+        accent-color: var(--accent);
         flex: 0 0 auto;
       }
-      .flow-hidden { display: none !important; }
-      [hidden] { display: none !important; }
-      .action-hint {
-        margin: 6px 0 0;
-        color: var(--muted);
-        font-size: 12px;
+
+      .flow-hidden,
+      [hidden] {
+        display: none !important;
       }
-      .grid-isbn {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
-        margin-bottom: 10px;
-      }
-      .grid-keyword {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-        margin-bottom: 10px;
-      }
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 2fr auto;
-        gap: 10px;
-        margin-bottom: 10px;
-      }
-      .grid-region {
-        display: grid;
-        grid-template-columns: 1fr 1fr auto;
-        gap: 10px;
-        margin-bottom: 10px;
-      }
+
       .field label {
         display: block;
-        font-size: 13px;
+        margin-bottom: 7px;
         color: var(--muted);
-        margin-bottom: 6px;
+        font-size: 13px;
       }
-      input, select, button {
+
+      input,
+      select,
+      button {
         width: 100%;
-        height: 40px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 0 10px;
+        min-height: 46px;
+        border-radius: 14px;
         font-size: 14px;
       }
+
+      input,
+      select {
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        background: var(--surface-strong);
+        color: var(--ink);
+      }
+
       button {
-        color: #fff;
         border: 0;
         cursor: pointer;
         font-weight: 700;
-        background: linear-gradient(120deg, var(--accent), var(--accent2));
+        color: #faf9f5;
+        background: var(--accent);
+        transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+        box-shadow: 0 0 0 1px rgba(201, 100, 66, 0.18);
       }
-      button:disabled { opacity: 0.55; cursor: wait; }
+
+      button:hover {
+        transform: translateY(-1px);
+        background: var(--accent-strong);
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: wait;
+        transform: none;
+      }
+
+      input:focus,
+      select:focus,
+      button:focus {
+        outline: 2px solid #3898ec;
+        outline-offset: 2px;
+      }
+
+      .result-panel {
+        display: grid;
+        gap: 18px;
+      }
+
+      .result-summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .summary-card {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.68);
+        box-shadow: var(--ring);
+      }
+
+      .summary-card span {
+        display: block;
+        color: var(--muted-soft);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .summary-card strong {
+        display: block;
+        margin-top: 10px;
+        color: var(--ink);
+        font-size: 1.35rem;
+      }
+
+      .summary-card p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
 
       .map-wrap {
-        margin: 8px 0 14px;
-        border: 1px solid var(--line);
-        border-radius: 10px;
+        margin: 0;
+        border-radius: 24px;
         overflow: hidden;
-        background: #eef3f5;
-      }
-      .map-head {
-        padding: 8px 10px;
-        font-size: 13px;
-        color: var(--muted);
-        border-bottom: 1px solid var(--line);
-        background: #f8fbfc;
-      }
-      #map { width: 100%; height: 360px; }
-      .map-status {
-        padding: 8px 10px;
-        font-size: 12px;
-        color: var(--muted);
-        border-top: 1px solid var(--line);
-        background: #f8fbfc;
+        background: #f1efe7;
       }
 
-      .meta { margin: 10px 0 0; color: var(--muted); font-size: 13px; }
-      .table-wrap { margin-top: 12px; overflow: auto; }
-      table { width: 100%; border-collapse: collapse; min-width: 920px; }
-      th, td {
+      .map-head,
+      .map-status {
+        padding: 12px 14px;
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .map-head {
         border-bottom: 1px solid var(--line);
-        padding: 9px 8px;
+      }
+
+      .map-status {
+        border-top: 1px solid var(--line);
+      }
+
+      #map {
+        width: 100%;
+        height: 360px;
+      }
+
+      .table-card {
+        overflow: hidden;
+      }
+
+      .table-wrap {
+        overflow: auto;
+      }
+
+      table {
+        width: 100%;
+        min-width: 920px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
         text-align: left;
         font-size: 13px;
+        vertical-align: top;
       }
-      th { position: sticky; top: 0; background: #edf5f8; z-index: 1; }
-      @media (max-width: 900px) {
-        .mode-grid, .grid-isbn, .grid-keyword, .grid-2, .grid-region { grid-template-columns: 1fr; }
-        #map { height: 300px; }
+
+      th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #f1efe7;
+        color: var(--ink-soft);
+      }
+
+      td a {
+        color: var(--accent);
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .workspace-grid,
+        .workspace-head,
+        .result-summary {
+          grid-template-columns: 1fr;
+        }
+
+        .status-chip {
+          justify-self: start;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .wrap {
+          width: min(100% - 18px, 1200px);
+          padding-top: 18px;
+        }
+
+        .workspace {
+          padding: 18px;
+          border-radius: 24px;
+        }
+
+        .controls-panel,
+        .result-panel {
+          padding: 18px;
+        }
+
+        .mode-grid,
+        .grid-isbn,
+        .grid-keyword,
+        .grid-2,
+        .grid-region {
+          grid-template-columns: 1fr;
+        }
+
+        #map {
+          height: 300px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="wrap">
-      <div class="card">
-        <h1>대출가능 도서관 검색</h1>
-
-        <div class="step-title">1) 검색 도서 선택</div>
-        <div class="mode-grid" role="radiogroup" aria-label="검색 방식">
-          <label class="mode-option" for="modeKeyword">
-            <input type="radio" id="modeKeyword" name="searchMode" value="keyword" checked />
-            도서명/저자로 검색
-          </label>
-          <label class="mode-option" for="modeIsbn">
-            <input type="radio" id="modeIsbn" name="searchMode" value="isbn" />
-            ISBN으로 바로 검색
-          </label>
-        </div>
-        <p id="modeHint" class="subhint"></p>
-
-        <div id="isbnFlow" class="grid-isbn flow-hidden">
-          <div class="field">
-            <label for="isbnInput">ISBN</label>
-            <input id="isbnInput" placeholder="예: 979..." />
-          </div>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Find Library</span>
+          <h1>읽고 싶은 책이 지금 어디에 있는지, 차분하게 좁혀 가는 검색.</h1>
+          <p>
+            도서명이나 ISBN으로 책을 찾고, 지역을 좁힌 뒤, 실제 대출 가능한 도서관과 위치를 한 번에
+            확인하는 탐색형 검색 화면입니다.
+          </p>
+          <ul class="hero-points">
+            <li>키워드 또는 ISBN 기반 도서 탐색</li>
+            <li>지역 필터와 지도 기반 결과 확인</li>
+            <li>대출 가능 여부, 연락처, 홈페이지까지 한 화면 정리</li>
+          </ul>
         </div>
 
-        <div id="keywordFlow" class="grid-keyword">
-          <div class="field">
-            <label for="keywordInput">도서명/저자 키워드</label>
-            <input id="keywordInput" placeholder="예: 해리포터, 토지 박경리" />
+        <aside class="hero-aside">
+          <div class="aside-note">
+            <span class="panel-kicker">Search flow</span>
+            <strong>Book → Region → Library</strong>
+            <p>검색 흐름을 세 단계로 나눠, 처음 보는 사용자도 헤매지 않도록 정리했습니다.</p>
           </div>
-          <div class="field">
-            <label>&nbsp;</label>
-            <button id="findBtn" type="button">도서 후보 조회</button>
+          <div class="aside-stat">
+            <span class="panel-kicker">Interface tone</span>
+            <strong>Claude-inspired quietness</strong>
+            <p>크림톤 배경, 세리프 헤드라인, 얕은 링 그림자로 더 차분한 탐색 경험을 만듭니다.</p>
           </div>
+        </aside>
+      </section>
+
+      <section class="workspace">
+        <div class="workspace-head">
+          <div>
+            <span class="eyebrow">Search Workspace</span>
+            <h2>대출 가능한 도서관을 빠르게 좁혀 보는 작업 화면</h2>
+            <p>
+              왼쪽에서 검색 조건을 정리하고, 오른쪽에서 지도와 결과 테이블을 함께 확인할 수 있게
+              배치했습니다.
+            </p>
+          </div>
+          <div class="status-chip">지역별 소장 정보를 same-origin API로 조회</div>
         </div>
 
-        <div id="candidateFlow">
-          <div class="grid-2">
-            <div class="field">
-              <label for="bookSelect">후보 도서 선택</label>
-              <select id="bookSelect">
-                <option value="">후보 도서 선택</option>
-              </select>
+        <div class="workspace-grid">
+          <section class="controls-panel">
+            <span class="panel-kicker">Controls</span>
+            <h3 class="panel-title">검색 조건</h3>
+            <p class="panel-desc">책을 고르고 지역을 좁힌 다음, 바로 검색을 실행할 수 있습니다.</p>
+
+            <div class="step-title">1. 검색 도서 선택</div>
+            <div class="mode-grid" role="radiogroup" aria-label="검색 방식">
+              <label class="mode-option" for="modeKeyword">
+                <input type="radio" id="modeKeyword" name="searchMode" value="keyword" checked />
+                도서명 또는 저자로 검색
+              </label>
+              <label class="mode-option" for="modeIsbn">
+                <input type="radio" id="modeIsbn" name="searchMode" value="isbn" />
+                ISBN으로 바로 검색
+              </label>
             </div>
-            <div class="field">
-              <label>&nbsp;</label>
-              <button id="clearCandidateBtn" type="button">후보 선택 초기화</button>
+            <p id="modeHint" class="subhint"></p>
+
+            <div id="isbnFlow" class="grid-isbn flow-hidden">
+              <div class="field">
+                <label for="isbnInput">ISBN</label>
+                <input id="isbnInput" placeholder="예: 979..." />
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="step-title">2) 지역 선택</div>
-        <div class="grid-region">
-          <div class="field">
-            <label for="region">시/도</label>
-            <select id="region">
-              <option value="">시/도 선택</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="dtl">구/군</label>
-            <select id="dtl">
-              <option value="">구/군 선택</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>&nbsp;</label>
-            <button id="searchBtn" type="button">검색</button>
-          </div>
-        </div>
-        <p id="searchHint" class="action-hint"></p>
+            <div id="keywordFlow" class="grid-keyword">
+              <div class="field">
+                <label for="keywordInput">도서명 또는 저자 키워드</label>
+                <input id="keywordInput" placeholder="예: 해리포터, 토지 박경리" />
+              </div>
+              <div class="field">
+                <label>&nbsp;</label>
+                <button id="findBtn" type="button">도서 후보 조회</button>
+              </div>
+            </div>
 
-        <div class="map-wrap">
-          <div class="map-head">지도 (검색 결과 도서관 위치)</div>
-          <div id="map"></div>
-          <div id="mapStatus" class="map-status">지도 준비 중...</div>
-        </div>
+            <div id="candidateFlow">
+              <div class="grid-2">
+                <div class="field">
+                  <label for="bookSelect">후보 도서 선택</label>
+                  <select id="bookSelect">
+                    <option value="">후보 도서 선택</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>&nbsp;</label>
+                  <button id="clearCandidateBtn" type="button">후보 선택 초기화</button>
+                </div>
+              </div>
+            </div>
 
-        <div id="meta" class="meta"></div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>도서관명</th>
-                <th>대출가능여부</th>
-                <th>주소</th>
-                <th>전화</th>
-                <th>홈페이지</th>
-                <th>도서관코드</th>
-              </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-          </table>
+            <div class="step-title">2. 지역 선택</div>
+            <div class="grid-region">
+              <div class="field">
+                <label for="region">시/도</label>
+                <select id="region">
+                  <option value="">시/도 선택</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="dtl">구/군</label>
+                <select id="dtl">
+                  <option value="">구/군 선택</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>&nbsp;</label>
+                <button id="searchBtn" type="button">검색</button>
+              </div>
+            </div>
+            <p id="searchHint" class="action-hint"></p>
+          </section>
+
+          <section class="result-panel">
+            <div>
+              <span class="panel-kicker">Results</span>
+              <h3 class="panel-title">지도와 결과 목록</h3>
+              <p class="panel-desc">검색 결과가 들어오면 위치와 상세 정보를 한 화면에서 비교할 수 있습니다.</p>
+            </div>
+
+            <div class="result-summary">
+              <div class="summary-card">
+                <span>Search mode</span>
+                <strong>Keyword or ISBN</strong>
+                <p>도서명 검색과 정확한 ISBN 검색 모두 지원합니다.</p>
+              </div>
+              <div class="summary-card">
+                <span>Map status</span>
+                <strong>Live location view</strong>
+                <p>도서관 주소를 지도 마커로 바로 시각화합니다.</p>
+              </div>
+              <div class="summary-card">
+                <span>Output</span>
+                <strong>Availability first</strong>
+                <p>대출 가능 여부와 연락처, 홈페이지를 함께 확인합니다.</p>
+              </div>
+            </div>
+
+            <div class="map-wrap">
+              <div class="map-head">지도에서 검색 결과 도서관 위치 보기</div>
+              <div id="map"></div>
+              <div id="mapStatus" class="map-status">지도 준비 중...</div>
+            </div>
+
+            <div id="meta" class="meta"></div>
+
+            <div class="table-card">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>도서관명</th>
+                      <th>대출가능여부</th>
+                      <th>주소</th>
+                      <th>전화</th>
+                      <th>홈페이지</th>
+                      <th>도서관코드</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
         </div>
-      </div>
+      </section>
     </div>
 
     <script src="./config.js"></script>
