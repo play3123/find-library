@@ -382,6 +382,23 @@
         border-top: 1px solid var(--line);
       }
 
+      .map-iw {
+        padding: 8px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--ink);
+      }
+
+      .map-iw a {
+        color: var(--accent);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .map-iw a:hover {
+        text-decoration: underline;
+      }
+
       #map {
         width: 100%;
         height: 360px;
@@ -1037,6 +1054,35 @@
           });
         }
 
+        function escapeHtml(value) {
+          return String(value == null ? "" : value).replace(/[&<>"']/g, function (ch) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[ch];
+          });
+        }
+
+        function normalizeHomepageUrl(url) {
+          const value = String(url == null ? "" : url).trim();
+          if (!value) return "";
+          return /^https?:\/\//i.test(value) ? value : "https://" + value;
+        }
+
+        function buildInfoWindowContent(row) {
+          const name = escapeHtml(row && row.libName);
+          const homepageUrl = normalizeHomepageUrl(row && row.homepage);
+
+          if (!homepageUrl) {
+            return '<div class="map-iw">' + name + "</div>";
+          }
+
+          return (
+            '<div class="map-iw">' +
+            '<a href="' + escapeHtml(homepageUrl) + '" target="_blank" rel="noopener noreferrer">' +
+            name +
+            "</a>" +
+            "</div>"
+          );
+        }
+
         function renderRowsOnMap(rows) {
           if (!mapReady || !map || !rows) return;
           const mySeq = ++seq;
@@ -1079,7 +1125,7 @@
               });
 
               const iw = new kakao.maps.InfoWindow({
-                content: '<div style="padding:6px 8px;font-size:12px;">' + p.row.libName + '</div>'
+                content: buildInfoWindowContent(p.row)
               });
 
               kakao.maps.event.addListener(marker, "click", function () {
