@@ -1,11 +1,14 @@
 ﻿"use strict";
 
+const { AsyncLocalStorage } = require("node:async_hooks");
 const express = require("express");
 const cors = require("cors");
 const { XMLParser } = require("fast-xml-parser");
 const { REGIONS, DTL_ROWS } = require("./src/codes");
 
 const app = express();
+const usageStore = new AsyncLocalStorage();
+const DATA4LIBRARY_DAILY_LIMIT = 500;
 
 const LIBCFG = {
   API_BASE: "https://www.data4library.kr/api",
@@ -36,6 +39,9 @@ setInterval(() => {
 }, 10 * 60 * 1000).unref();
 
 app.use(express.json({ limit: "1mb" }));
+app.use((req, res, next) => {
+  usageStore.run({ data4libraryCalls: 0 }, next);
+});
 
 const allowOrigin = String(process.env.ALLOWED_ORIGIN || "").trim();
 app.use(
@@ -54,18 +60,18 @@ app.get("/health", (req, res) => {
 });
 
 app.get("/api/regions", (req, res) => {
-  res.json({ rows: REGIONS });
+  sendJson(res, { rows: REGIONS });
 });
 
 app.get("/api/dtls", (req, res) => {
   const regionName = String(req.query.regionName || "").trim();
-  if (!regionName) return res.json({ rows: [] });
+  if (!regionName) return sendJson(res, { rows: [] });
 
   const rows = DTL_ROWS
     .filter((row) => row.parentRegionName === regionName)
     .map((row) => ({ name: row.name, code: row.code }));
 
-  res.json({ rows });
+  sendJson(res, { rows });
 });
 
 app.post("/api/books/candidates", async (req, res) => {
@@ -84,7 +90,7 @@ app.post("/api/books/candidates", async (req, res) => {
       }))
       .filter((b) => b.bookname || b.isbn13);
 
-    res.json({ rows });
+    sendJson(res, { rows });
   } catch (error) {
     sendError(res, error);
   }
@@ -96,7 +102,7 @@ app.post("/api/books/resolve-isbn", async (req, res) => {
     if (!queryOrIsbn) return res.status(400).json({ error: "queryOrIsbn is required" });
 
     const isbn13 = await resolveIsbn13(queryOrIsbn);
-    if (!isbn13) return res.json({ isbn13: "", bookname: "" });
+    if (!isbn13) return sendJson(res, { isbn13: "", bookname: "" });
 
     let bookname = "";
     const digits = queryOrIsbn.replace(/[^0-9Xx]/g, "");
@@ -105,7 +111,7 @@ app.post("/api/books/resolve-isbn", async (req, res) => {
       bookname = first && first.bookname ? first.bookname : "";
     }
 
-    res.json({ isbn13, bookname });
+    sendJson(res, { isbn13, bookname });
   } catch (error) {
     sendError(res, error);
   }
@@ -130,7 +136,7 @@ app.post("/api/search", async (req, res) => {
     const libs = await fetchAllLibrariesByBook(isbn13, regionCode, dtlCode);
     const enriched = await enrichLibrariesWithAvailability(libs, isbn13);
 
-    res.json({
+    sendJson(res, {
       query,
       isbn13,
       regionName,
@@ -153,7 +159,7 @@ app.post("/api/search", async (req, res) => {
 });
 
 app.get("/api/client-config", (req, res) => {
-  res.json({
+  sendJson(res, {
     kakaoJsKey: String(process.env.KAKAO_JS_KEY || "").trim()
   });
 });
@@ -478,6 +484,7 @@ async function fetchText(url) {
   if (!response.ok) {
     throw new Error(`API 호출 실패 (HTTP ${response.status}). URL=${url}\n응답(일부): ${body.slice(0, 300)}`);
   }
+  trackData4LibraryCall(url);
   return body;
 }
 
@@ -652,6 +659,42 @@ function toArray(value) {
 function sendError(res, error) {
   const message = error && error.message ? error.message : String(error);
   res.status(500).json({ error: message });
+}
+
+function sendJson(res, payload) {
+  res.json(withUsage(payload));
+}
+
+function withUsage(payload) {
+  const base = payload && typeof payload === "object" && !Array.isArray(payload) ? payload : { value: payload };
+  return Object.assign({}, base, {
+    usage: {
+      delta: getCurrentUsageDelta(),
+      limit: DATA4LIBRARY_DAILY_LIMIT,
+      dateKey: getUsageDateKey()
+    }
+  });
+}
+
+function getCurrentUsageDelta() {
+  const store = usageStore.getStore();
+  return store && Number.isFinite(store.data4libraryCalls) ? store.data4libraryCalls : 0;
+}
+
+function trackData4LibraryCall(url) {
+  if (!String(url || "").startsWith(LIBCFG.API_BASE)) return;
+  const store = usageStore.getStore();
+  if (!store) return;
+  store.data4libraryCalls += 1;
+}
+
+function getUsageDateKey() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
 }
 
 module.exports = app;

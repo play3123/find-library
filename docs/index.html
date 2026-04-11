@@ -382,6 +382,14 @@
         border-top: 1px solid var(--line);
       }
 
+      .map-usage {
+        margin-top: 10px;
+        text-align: right;
+        color: var(--ink-soft);
+        font-size: 13px;
+        font-variant-numeric: tabular-nums;
+      }
+
       .map-iw {
         padding: 8px 10px;
         font-size: 12px;
@@ -576,6 +584,7 @@
               <div id="map"></div>
               <div id="mapStatus" class="map-status">지도 준비 중...</div>
             </div>
+            <div id="usageDisplay" class="map-usage">0/500</div>
 
             <div id="meta" class="meta"></div>
 
@@ -623,6 +632,56 @@
           if (meta) meta.textContent = msg || "";
         }
 
+        function getTodayUsageKey() {
+          return new Intl.DateTimeFormat("en-CA", {
+            timeZone: "Asia/Seoul",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          }).format(new Date());
+        }
+
+        function usageStorageKey(dateKey) {
+          return "data4library-usage:" + dateKey;
+        }
+
+        function readUsageState(dateKey, limit) {
+          const key = usageStorageKey(dateKey || getTodayUsageKey());
+          let count = 0;
+          try {
+            count = Number(localStorage.getItem(key) || "0");
+          } catch (error) {
+            count = 0;
+          }
+
+          if (!Number.isFinite(count) || count < 0) count = 0;
+          return { key, count, limit: Number(limit) || 500 };
+        }
+
+        function renderUsageDisplay(count, limit) {
+          const el = $("usageDisplay");
+          if (!el) return;
+          el.textContent = `${count}/${limit}`;
+        }
+
+        function syncUsageDisplay(usage) {
+          const dateKey = usage && usage.dateKey ? String(usage.dateKey) : getTodayUsageKey();
+          const limit = usage && usage.limit ? Number(usage.limit) : 500;
+          const state = readUsageState(dateKey, limit);
+          let nextCount = state.count;
+
+          if (usage && Number.isFinite(Number(usage.delta)) && Number(usage.delta) > 0) {
+            nextCount += Number(usage.delta);
+            try {
+              localStorage.setItem(state.key, String(nextCount));
+            } catch (error) {
+              // no-op
+            }
+          }
+
+          renderUsageDisplay(nextCount, limit);
+        }
+
         function ensureApiBase() {
           if (/YOUR-RENDER-SERVICE/i.test(API_BASE)) {
             throw new Error("docs/config.js의 API_BASE 설정값을 확인하세요.");
@@ -659,6 +718,7 @@
             throw new Error((data && data.error) || `요청 실패(HTTP ${res.status})`);
           }
 
+          syncUsageDisplay(data && data.usage);
           return data;
         }
 
@@ -980,6 +1040,7 @@
           } else {
             safeMeta("초기화 완료");
           }
+          syncUsageDisplay();
           loadRegions();
         } catch (error) {
           safeMeta("초기화 오류: " + (error && error.message ? error.message : error));
