@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>개발협력 시민사회 기여 분석 대시보드</title>
+    <style>
+      :root {
+        --bg: #f4f0e8;
+        --surface: rgba(255, 252, 247, 0.88);
+        --surface-strong: #fffdf8;
+        --line: rgba(89, 77, 58, 0.14);
+        --line-strong: rgba(89, 77, 58, 0.24);
+        --ink: #1d1a16;
+        --ink-soft: #5a5145;
+        --muted: #73695d;
+        --accent: #1f6c5b;
+        --accent-strong: #174f43;
+        --accent-soft: rgba(31, 108, 91, 0.12);
+        --warn: #b45b36;
+        --shadow: 0 18px 60px rgba(28, 21, 12, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(31, 108, 91, 0.09), transparent 28%),
+          radial-gradient(circle at top right, rgba(180, 91, 54, 0.12), transparent 22%),
+          linear-gradient(180deg, #f8f4ed 0%, var(--bg) 100%);
+      }
+
+      button, input, select { font: inherit; }
+
+      .app-shell {
+        width: min(1440px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 24px 0 48px;
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) auto;
+        gap: 24px;
+        align-items: end;
+        padding: 16px 0 28px;
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.58);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 16px 0 10px;
+        font-size: clamp(2rem, 4vw, 3.35rem);
+        line-height: 1.04;
+        letter-spacing: -0.04em;
+      }
+
+      .lede {
+        max-width: 72ch;
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.7;
+        font-size: 0.98rem;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .year-switch {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.66);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .year-pill {
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--muted);
+        padding: 9px 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .year-pill[aria-pressed="true"] {
+        background: var(--accent);
+        color: white;
+      }
+
+      .notes {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-bottom: 18px;
+      }
+
+      .note {
+        padding: 16px 18px;
+        border-top: 1px solid var(--line-strong);
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.36);
+        color: var(--ink-soft);
+        line-height: 1.6;
+      }
+
+      .board {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.9fr);
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .panel + .panel { margin-top: 0; }
+
+      .panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 20px 24px 0;
+      }
+
+      .panel-head h2,
+      .panel-head h3 {
+        margin: 0;
+        font-size: 1.05rem;
+        letter-spacing: -0.03em;
+      }
+
+      .panel-head p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1px;
+        margin-top: 18px;
+        background: var(--line);
+        border-top: 1px solid var(--line);
+        border-bottom-left-radius: 28px;
+        border-bottom-right-radius: 28px;
+        overflow: hidden;
+      }
+
+      .metric {
+        background: var(--surface-strong);
+        padding: 18px 20px 20px;
+      }
+
+      .metric label {
+        display: block;
+        color: var(--muted);
+        font-size: 0.82rem;
+        margin-bottom: 10px;
+      }
+
+      .metric strong {
+        display: block;
+        font-size: clamp(1.3rem, 2vw, 1.9rem);
+        letter-spacing: -0.04em;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 8px;
+        color: var(--ink-soft);
+        font-size: 0.9rem;
+      }
+
+      .matrix-wrap {
+        padding: 0 18px 18px;
+      }
+
+      .matrix-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 16px 6px 8px;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .matrix-legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .legend-chip,
+      .legend-ring,
+      .legend-bubble {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+      }
+
+      .legend-chip {
+        background: linear-gradient(135deg, rgba(180, 91, 54, 0.2), rgba(180, 91, 54, 0.86));
+      }
+
+      .legend-ring {
+        border: 2px solid rgba(31, 108, 91, 0.7);
+        background: transparent;
+      }
+
+      .legend-bubble {
+        background: rgba(31, 108, 91, 0.28);
+      }
+
+      .matrix-grid {
+        display: grid;
+        grid-template-columns: 190px repeat(5, minmax(140px, 1fr));
+        gap: 1px;
+        border: 1px solid var(--line);
+        background: var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+      }
+
+      .matrix-header,
+      .matrix-country,
+      .matrix-cell {
+        background: rgba(255, 253, 249, 0.96);
+      }
+
+      .matrix-header {
+        padding: 16px 14px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .matrix-country {
+        padding: 18px 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .matrix-country strong {
+        font-size: 0.96rem;
+      }
+
+      .matrix-country span {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .matrix-cell {
+        position: relative;
+        min-height: 132px;
+        padding: 14px;
+        cursor: pointer;
+        transition: transform 180ms ease, box-shadow 180ms ease;
+      }
+
+      .matrix-cell:hover,
+      .matrix-cell.is-selected {
+        transform: translateY(-2px);
+        box-shadow: inset 0 0 0 1px rgba(31, 108, 91, 0.4);
+      }
+
+      .cell-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 0.76rem;
+        color: rgba(29, 26, 22, 0.74);
+      }
+
+      .cell-demand {
+        font-weight: 700;
+      }
+
+      .cell-stage {
+        position: absolute;
+        inset: auto 12px 12px auto;
+        width: 62px;
+        height: 62px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+      }
+
+      .cell-bubble {
+        position: absolute;
+        inset: auto 16px 16px auto;
+        border-radius: 999px;
+        background: rgba(31, 108, 91, 0.28);
+      }
+
+      .cell-ring {
+        position: absolute;
+        inset: auto 13px 13px auto;
+        border-radius: 999px;
+        border: 2px solid rgba(31, 108, 91, 0.76);
+      }
+
+      .cell-meta {
+        position: absolute;
+        left: 14px;
+        right: 84px;
+        bottom: 14px;
+        display: grid;
+        gap: 4px;
+      }
+
+      .cell-meta strong {
+        font-size: 0.92rem;
+        letter-spacing: -0.03em;
+      }
+
+      .cell-meta span {
+        font-size: 0.78rem;
+        color: rgba(29, 26, 22, 0.74);
+      }
+
+      .stack {
+        display: grid;
+        gap: 18px;
+      }
+
+      .side-block {
+        padding: 18px 22px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .side-block:last-child { border-bottom: 0; }
+
+      .rank-list,
+      .plain-list {
+        display: grid;
+        gap: 12px;
+        margin: 14px 0 0;
+      }
+
+      .rank-item,
+      .plain-item {
+        display: grid;
+        gap: 4px;
+        padding: 12px 0;
+        border-top: 1px solid rgba(89, 77, 58, 0.1);
+      }
+
+      .rank-item:first-child,
+      .plain-item:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .rank-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: baseline;
+      }
+
+      .rank-line strong {
+        font-size: 0.94rem;
+      }
+
+      .rank-line span,
+      .plain-item span {
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .score-chip {
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: rgba(180, 91, 54, 0.12);
+        color: var(--warn);
+        font-weight: 700;
+        font-size: 0.76rem;
+      }
+
+      .inspector {
+        display: grid;
+        gap: 16px;
+      }
+
+      .inspector-grid {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .mini-card {
+        padding: 14px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(89, 77, 58, 0.1);
+      }
+
+      .mini-card label {
+        display: block;
+        color: var(--muted);
+        font-size: 0.78rem;
+        margin-bottom: 8px;
+      }
+
+      .mini-card strong {
+        display: block;
+        font-size: 1.12rem;
+      }
+
+      .chart-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      .bar-table {
+        padding: 0 22px 22px;
+      }
+
+      .bar-row {
+        display: grid;
+        grid-template-columns: 130px minmax(0, 1fr) 72px;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 0;
+        border-top: 1px solid rgba(89, 77, 58, 0.08);
+      }
+
+      .bar-row:first-child { border-top: 0; }
+
+      .bar-track {
+        position: relative;
+        height: 11px;
+        border-radius: 999px;
+        background: rgba(31, 108, 91, 0.08);
+        overflow: hidden;
+      }
+
+      .bar-fill,
+      .bar-fill-alt {
+        position: absolute;
+        inset: 0 auto 0 0;
+        border-radius: inherit;
+      }
+
+      .bar-fill { background: var(--accent); }
+      .bar-fill-alt { background: rgba(180, 91, 54, 0.55); }
+
+      .country-table {
+        padding: 0 22px 22px;
+      }
+
+      .country-row {
+        display: grid;
+        grid-template-columns: 110px 100px 88px 1fr;
+        gap: 12px;
+        align-items: center;
+        padding: 12px 0;
+        border-top: 1px solid rgba(89, 77, 58, 0.08);
+      }
+
+      .country-row:first-child { border-top: 0; }
+
+      .sparkline {
+        width: 100%;
+        height: 42px;
+      }
+
+      .tag-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 0 22px 22px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(31, 108, 91, 0.18);
+        background: rgba(31, 108, 91, 0.08);
+        color: var(--accent-strong);
+        font-size: 0.88rem;
+        font-weight: 700;
+      }
+
+      .tag small {
+        font-size: 0.76rem;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      .project-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .project-wrap {
+        padding: 0 22px 22px;
+        overflow: auto;
+      }
+
+      .project-table th,
+      .project-table td {
+        padding: 13px 10px;
+        border-top: 1px solid rgba(89, 77, 58, 0.08);
+        text-align: left;
+        vertical-align: top;
+        font-size: 0.88rem;
+        line-height: 1.55;
+      }
+
+      .project-table thead th {
+        position: sticky;
+        top: 0;
+        background: #fcfaf6;
+        color: var(--muted);
+        font-size: 0.78rem;
+        letter-spacing: 0.03em;
+        z-index: 1;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(31, 108, 91, 0.1);
+        color: var(--accent-strong);
+        font-size: 0.76rem;
+        font-weight: 700;
+        margin: 2px 6px 2px 0;
+      }
+
+      .status {
+        padding: 18px 22px 26px;
+        color: var(--muted);
+      }
+
+      .loading {
+        min-height: 220px;
+        display: grid;
+        place-items: center;
+        font-size: 0.95rem;
+      }
+
+      @media (max-width: 1180px) {
+        .board,
+        .chart-grid,
+        .notes,
+        .topbar {
+          grid-template-columns: 1fr;
+        }
+
+        .metrics {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 880px) {
+        .app-shell {
+          width: min(100%, calc(100% - 18px));
+          padding-top: 16px;
+        }
+
+        .matrix-grid {
+          grid-template-columns: 150px repeat(5, minmax(132px, 1fr));
+          overflow: auto;
+        }
+
+        .country-row {
+          grid-template-columns: 1fr;
+        }
+
+        .metrics,
+        .inspector-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <span class="kicker">Policy Workspace</span>
+          <h1>개발협력 수요와 시민사회 기여를 같은 화면에서 읽는 대시보드</h1>
+          <p class="lede">
+            SDG 연계 수요지수, KOICA 공급, 그리고 시민사회협력프로그램 포트폴리오를 국가 x 분야 단위로
+            연결해 정책적 공백과 시민사회 보완 가능성을 함께 봅니다.
+          </p>
+        </div>
+        <div class="toolbar">
+          <div class="year-switch" id="year-switch" aria-label="분석 연도 선택"></div>
+        </div>
+      </header>
+
+      <section class="notes" id="note-strip"></section>
+
+      <div class="board">
+        <main class="stack">
+          <section class="panel" id="overview-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Selected KPIs</h2>
+                <p>현재 연도 기준 공급 규모, 추정 CSO 지분, 그리고 우선 검토가 필요한 수요-공급 공백 조합입니다.</p>
+              </div>
+            </div>
+            <div class="metrics" id="metrics"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>국가 x 분야 매트릭스</h2>
+                <p>색은 수요, 원 크기는 공급 규모, 외곽 링은 CSO 추정 지분을 뜻합니다. 셀을 눌러 세부 지표를 확인하세요.</p>
+              </div>
+            </div>
+            <div class="matrix-wrap">
+              <div class="matrix-legend">
+                <span><i class="legend-chip"></i> 수요지수</span>
+                <span><i class="legend-bubble"></i> KOICA 공급 규모</span>
+                <span><i class="legend-ring"></i> 추정 CSO 지분</span>
+              </div>
+              <div class="matrix-grid" id="matrix-grid"></div>
+            </div>
+          </section>
+
+          <section class="chart-grid">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>분야별 공급과 CSO 지분</h2>
+                  <p>KOICA 공급 총액과 추정 시민사회 금액을 같은 축에서 비교합니다.</p>
+                </div>
+              </div>
+              <div class="bar-table" id="sector-bars"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>국가별 공급 추세</h2>
+                  <p>최근 5년 추세와 함께 국가별 평균 수요 및 CSO 지분을 읽습니다.</p>
+                </div>
+              </div>
+              <div class="country-table" id="country-table"></div>
+            </section>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>대상 집단 태그</h2>
+                <p>사업명 기반 자동 태깅 결과입니다. 표본 검증을 전제로 활용해야 하지만, 어떤 대상이 집중되는지는 빠르게 파악할 수 있습니다.</p>
+              </div>
+            </div>
+            <div class="tag-cloud" id="target-tags"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>프로젝트 드릴다운</h2>
+                <p>선정 국가군 안에서 추정 연차예산이 큰 사업을 우선 보여줍니다.</p>
+              </div>
+            </div>
+            <div class="project-wrap">
+              <table class="project-table">
+                <thead>
+                  <tr>
+                    <th>국가</th>
+                    <th>분야</th>
+                    <th>유형</th>
+                    <th>기관</th>
+                    <th>사업명</th>
+                    <th>추정 연차예산</th>
+                    <th>대상</th>
+                  </tr>
+                </thead>
+                <tbody id="project-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </main>
+
+        <aside class="stack">
+          <section class="panel">
+            <div class="side-block">
+              <h3 style="margin:0;">Top Gap Queue</h3>
+              <p style="margin:6px 0 0;color:var(--muted);font-size:0.9rem;line-height:1.6;">
+                수요가 높고 공급과 CSO 존재감이 상대적으로 낮은 조합을 우선순위로 정렬했습니다.
+              </p>
+              <div class="rank-list" id="gap-list"></div>
+            </div>
+
+            <div class="side-block">
+              <h3 style="margin:0;">Selected Cell</h3>
+              <div class="inspector" id="cell-inspector"></div>
+            </div>
+
+            <div class="side-block">
+              <h3 style="margin:0;">지역 분포 참고</h3>
+              <p style="margin:6px 0 0;color:var(--muted);font-size:0.9rem;line-height:1.6;">
+                같은 연도의 KOICA 지역 비중입니다. 국가 매트릭스를 지역 배분과 함께 읽기 위한 보조 정보로 씁니다.
+              </p>
+              <div class="plain-list" id="region-list"></div>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <div class="status" id="status">
+        KOICA 공급은 포털 실데이터, 수요는 World Bank 지표, CSO 기여는 KOICA 시민사회협력프로그램 사업리스트 기반 추정값입니다.
+      </div>
+    </div>
+
+    <script src="./config.js"></script>
+    <script src="./oda-dashboard.js"></script>
+  </body>
+</html>
