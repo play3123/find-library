@@ -5,7 +5,6 @@ const express = require("express");
 const cors = require("cors");
 const { XMLParser } = require("fast-xml-parser");
 const { REGIONS, DTL_ROWS } = require("./src/codes");
-const { getDashboard } = require("./src/oda/dashboard");
 
 const app = express();
 const usageStore = new AsyncLocalStorage();
@@ -164,8 +163,6 @@ app.get("/api/client-config", (req, res) => {
     kakaoJsKey: String(process.env.KAKAO_JS_KEY || "").trim()
   });
 });
-
-app.get("/api/oda/dashboard", getDashboard);
 
 app.use((req, res) => {
   res.status(404).json({ error: "Not Found" });
