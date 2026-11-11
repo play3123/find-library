@@ -115,13 +115,14 @@ label { display: block; font-size: 12px; color: var(--muted); font-weight: 400; 
 .result-copy { grid-column: 1/-1; margin-top: 12px; }
 .copy-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .copy-book-title { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px; }
-.map-book-copy { margin-bottom: 14px; }
+.map-book-copy { display: none; margin-bottom: 14px; }
 .copy-status { color: var(--accent); font-size: 12px; margin-top: 7px; overflow-wrap: anywhere; }
 .copy-status:empty { display: none; }
 .copy-fallback { margin-top: 7px; }
 .manual-copy { width: 100%; padding: 8px; border: 1px solid var(--field-border); border-radius: 0; color: var(--ink); font: 13px/1.6 var(--sans); background: var(--white); resize: vertical; }
 .results-layout[data-map-expanded=true] { grid-template-columns: minmax(0,1fr); row-gap: 20px; }
 .results-layout[data-map-expanded=true] .list-pane,.results-layout[data-map-expanded=true] .result-copy { display: none; }
+.results-layout[data-map-expanded=true] .map-book-copy { display: block; }
 .results-layout[data-map-expanded=true] .map-pane { position: relative; top: auto; }
 .results-layout[data-map-expanded=true] .map { height: clamp(420px,72svh,780px); }
 .map-pane { scroll-margin-top: 20px; }
