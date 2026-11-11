@@ -13,6 +13,8 @@ related_targets: ["docs/styles.css","docs/app.js"]
 
 비교 근거: C:/Users/User/Documents/Codex/2026-11-11_FindLibrary_concepts/outputs/.impeccable/mocks/decision/B-text.html 및 B-text-desktop.png. 코드 기반 방향으로 선택되었으며 생성 이미지의 공간 계약이 아니다.
 
+결과 정렬 조정: 일반 두 열 화면에서는 제목·설명·행동의 자연 높이를 공유해 목록과 지도 윗선을 같은 높이에 둔다. 지도 크기 버튼은 지역/범례 아래 왼쪽 행동 행에서 복사 버튼과 수직 위치를 맞춘다. 721–980px 별도 필터 행도 공유 높이에 반영한다. 본문 두 열과 sticky·지도 높이는 독립적으로 유지하며 모바일과 큰지도에는 공유 행 높이를 적용하지 않는다.
+
 ## Direction contract
 
 THESIS: 책의 본문처럼 검은 활자와 여백으로 정보를 읽게 한다. 장식 카드 대신 가로 검색과 목록·지도의 익숙한 작업 구조를 쓴다.
