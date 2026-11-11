@@ -168,7 +168,7 @@
     try {
       const data = await request("/api/dtls?regionName=" + encodeURIComponent(region.name));
       if (ticket !== state.districtRequest) return;
-      state.districts = data.rows || [];
+      state.districts = (data.rows || []).slice().sort((a, b) => a.name.localeCompare(b.name, "ko"));
       options($("dtl"), state.districts, region.code === "11" ? "서울 전체" : "시·군·구 선택", (r) => r.name);
       $("dtl").disabled = !state.districts.length;
       $("regionHint").textContent = region.code === "11" ? "서울 전체 또는 원하는 구를 선택하세요." : "해당 지역의 시·군·구를 선택하세요.";
@@ -254,7 +254,7 @@
     if (expanded) state.viewBeforeExpansion = $("resultLayout").dataset.view;
     state.mapExpanded = expanded; $("resultLayout").dataset.mapExpanded = String(expanded);
     $("toggleMapSize").setAttribute("aria-expanded", String(expanded));
-    $("toggleMapSize").textContent = expanded ? "원래 크기로" : "지도 크게 보기";
+    $("toggleMapSize").textContent = expanded ? "지도 원래 크기로" : "지도 크게 보기";
     if (expanded) updateViewControls("map");
     else if (restoreView) updateViewControls(window.matchMedia("(max-width:720px)").matches ? "map" : state.viewBeforeExpansion);
     updateMapSizeButton(); layoutMap();

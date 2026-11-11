@@ -538,7 +538,7 @@
       "name": "Book copy actions",
       "kind": "custom",
       "refersTo": "button-tool",
-      "description": "Copy title or ISBN from the current search result snapshot; status and manual fallback remain explicit.",
+      "description": "Copy title or ISBN from the current search result snapshot. Show only in the result header at normal map size, or above the expanded map; status and manual fallback remain explicit.",
       "html": "<div class=\"ds-sample\"><div class=\"ds-copy-actions\"><button class=\"ds-tool\" type=\"button\">책 제목 복사</button><button class=\"ds-tool\" type=\"button\">ISBN 복사</button></div></div>",
       "css": ".ds-sample{font-family:var(--sans,\"Inter\",\"Noto Sans KR\",system-ui,sans-serif);font-size:14px;line-height:1.65;color:var(--ink,#20201e)}.ds-sample button{font:inherit}.ds-sample .ds-tool{min-height:36px;padding:6px 10px;border:1px solid var(--field-border,#b7beb2);border-radius:0;background:var(--white,#fff);color:var(--accent,#52665b);font-size:12px;white-space:nowrap;cursor:pointer}.ds-sample .ds-tool:hover{background:var(--soft,#edf0e9);border-color:var(--accent,#52665b)}.ds-sample .ds-tool:disabled{color:#72796d;border-color:var(--line,#d7dbd1);background:#f0f2ec;cursor:not-allowed}.ds-sample .ds-tool:focus-visible{outline:2px solid var(--accent,#52665b);outline-offset:4px}.ds-sample .ds-copy-actions{display:flex;flex-wrap:wrap;gap:8px}"
     }
