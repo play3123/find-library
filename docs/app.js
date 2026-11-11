@@ -229,6 +229,7 @@
       script.onload = () => {
         if (!window.kakao || !kakao.maps) return script.onerror();
         kakao.maps.load(() => {
+          $("map").replaceChildren();
           map = new kakao.maps.Map($("map"), { center: new kakao.maps.LatLng(37.5665, 126.978), level: 7 });
           geocoder = new kakao.maps.services.Geocoder(); $("mapStatus").textContent = "목록 번호를 누르면 해당 도서관으로 이동합니다.";
           renderMap(visibleRows());
