@@ -41,9 +41,9 @@ typography:
     letterSpacing: -0.025em
   map-title:
     fontFamily: Georgia, "Times New Roman", serif
-    fontSize: 24px
+    fontSize: 26px
     fontWeight: 500
-    lineHeight: 1.65
+    lineHeight: 1.5
     letterSpacing: -0.025em
   result-title:
     fontFamily: Georgia, "Times New Roman", serif
@@ -240,7 +240,7 @@ Find Library / 대출가능 도서관 검색의 이름을 유지한다. 한 권�
 
 ### Hierarchy
 - **Display:** 페이지 제목. 최대 너비 (1190px)에서 (39px), (720px)에서 (31px / 1.35 / -0.04em), (360px)에서 (27px)로 줄인다.
-- **Headline:** 결과 제목. 모바일에서는 (24px)다. 지도 제목은 map-title이며 모바일에서는 (23px)다.
+- **Headline / map-title:** 결과와 지도 제목은 같은 크기와 줄높이를 사용한다. PC는 (26px), 모바일은 (24px), 줄높이는 (1.5)다.
 - **Result title:** 도서관명. 최대 (1190px)에서 (20px), (980px)에서 (19px), (720px)에서 (20px)다. 긴 이름은 줄바꿈한다.
 - **Body / Detail:** 기본 본문·입력과 주소·선택 정보. 도움말은 최대 (75ch), 모바일 주소는 (12px)다.
 - **Label / Badge:** 필드 이름·힌트·출처·대출 상태. 검색 방식은 데스크톱 (14px), 모바일 (13px)이며 선택은 밑줄로 표시한다.
