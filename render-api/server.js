@@ -1,14 +1,13 @@
-﻿"use strict";
+"use strict";
 
-const { AsyncLocalStorage } = require("node:async_hooks");
 const express = require("express");
 const cors = require("cors");
 const { XMLParser } = require("fast-xml-parser");
 const { REGIONS, DTL_ROWS } = require("./src/codes");
+const { createUsageCounter } = require("./src/usage-counter");
 
 const app = express();
-const usageStore = new AsyncLocalStorage();
-const DATA4LIBRARY_DAILY_LIMIT = 500;
+const usageCounter = createUsageCounter();
 
 const LIBCFG = {
   API_BASE: "https://www.data4library.kr/api",
@@ -39,9 +38,6 @@ setInterval(() => {
 }, 10 * 60 * 1000).unref();
 
 app.use(express.json({ limit: "1mb" }));
-app.use((req, res, next) => {
-  usageStore.run({ data4libraryCalls: 0 }, next);
-});
 
 const allowOrigin = String(process.env.ALLOWED_ORIGIN || "").trim();
 app.use(
@@ -55,8 +51,14 @@ app.use(
   })
 );
 
-app.get("/health", (req, res) => {
+app.get(["/health", "/api/health"], (req, res) => {
   res.json({ ok: true, time: new Date().toISOString() });
+});
+
+app.get("/api/usage", async (req, res) => {
+  res.set("Cache-Control", "no-store");
+  try { res.json({ usage: await usageCounter.read() }); }
+  catch (error) { res.status(503).json({ usage: usageCounter.unavailable(), error: error.message }); }
 });
 
 app.get("/api/regions", (req, res) => {
@@ -106,7 +108,7 @@ app.post("/api/books/resolve-isbn", async (req, res) => {
 
     let bookname = "";
     const digits = queryOrIsbn.replace(/[^0-9Xx]/g, "");
-    if (!/^\d{13}$/.test(digits)) {
+    if (!/^(?:\d{13}|\d{9}[\dXx])$/.test(digits)) {
       const first = await srchBooksFirst(queryOrIsbn);
       bookname = first && first.bookname ? first.bookname : "";
     }
@@ -189,7 +191,7 @@ function getNlkKey() {
 
 async function resolveIsbn13(queryOrIsbn) {
   const digits = String(queryOrIsbn || "").replace(/[^0-9Xx]/g, "");
-  if (/^\d{13}$/.test(digits)) return digits;
+  if (/^(?:\d{13}|\d{9}[\dXx])$/.test(digits)) return isbn13FromAny(digits);
 
   const first = await srchBooksFirst(queryOrIsbn);
   return first && first.isbn13 ? first.isbn13 : "";
@@ -331,11 +333,11 @@ async function enrichLibrariesWithAvailability(libs, isbn13) {
       const info = row.info || { hasBook: "", loanAvailable: "" };
       enriched[idx].hasBook = normalizeYn(info.hasBook);
       enriched[idx].loanAvailable = normalizeYn(info.loanAvailable);
-      bookExistCacheSet(row.item.cacheKey, info);
+      if (info.hasBook === "Y" || info.hasBook === "N") bookExistCacheSet(row.item.cacheKey, info);
     }
   }
 
-  return enriched.filter((l) => l.hasBook === "Y");
+  return enriched.filter((l) => l.hasBook !== "N");
 }
 
 function parseBookExistFromXmlText(xmlText) {
@@ -466,26 +468,27 @@ function buildUrlByBase(baseUrl, params) {
 }
 
 async function fetchText(url) {
+  if (String(url).startsWith(LIBCFG.API_BASE)) {
+    await usageCounter.increment();
+  }
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), LIBCFG.REQUEST_TIMEOUT_MS);
-
-  let response;
   try {
-    response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       redirect: "follow",
       signal: controller.signal
     });
+    const body = await response.text();
+    if (!response.ok) {
+      const error = new Error("도서 데이터 제공처가 응답하지 않았습니다. 잠시 후 다시 시도해 주세요.");
+      error.code = "UPSTREAM_ERROR";
+      throw error;
+    }
+    return body;
   } finally {
     clearTimeout(timer);
   }
-
-  const body = await response.text();
-  if (!response.ok) {
-    throw new Error(`API 호출 실패 (HTTP ${response.status}). URL=${url}\n응답(일부): ${body.slice(0, 300)}`);
-  }
-  trackData4LibraryCall(url);
-  return body;
 }
 
 function parseXml(xmlText) {
@@ -657,44 +660,18 @@ function toArray(value) {
 }
 
 function sendError(res, error) {
-  const message = error && error.message ? error.message : String(error);
-  res.status(500).json({ error: message });
+  const status = error && error.code === "USAGE_UNAVAILABLE" ? 503 : 502;
+  const message = error && error.code === "USAGE_UNAVAILABLE" ? error.message :
+    "도서 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
+  res.status(status).json({ error: message });
 }
 
-function sendJson(res, payload) {
-  res.json(withUsage(payload));
-}
-
-function withUsage(payload) {
-  const base = payload && typeof payload === "object" && !Array.isArray(payload) ? payload : { value: payload };
-  return Object.assign({}, base, {
-    usage: {
-      delta: getCurrentUsageDelta(),
-      limit: DATA4LIBRARY_DAILY_LIMIT,
-      dateKey: getUsageDateKey()
-    }
-  });
-}
-
-function getCurrentUsageDelta() {
-  const store = usageStore.getStore();
-  return store && Number.isFinite(store.data4libraryCalls) ? store.data4libraryCalls : 0;
-}
-
-function trackData4LibraryCall(url) {
-  if (!String(url || "").startsWith(LIBCFG.API_BASE)) return;
-  const store = usageStore.getStore();
-  if (!store) return;
-  store.data4libraryCalls += 1;
-}
-
-function getUsageDateKey() {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Seoul",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  }).format(new Date());
+async function sendJson(res, payload) {
+  res.set("Cache-Control", "no-store");
+  let usage;
+  try { usage = await usageCounter.read(); }
+  catch (error) { usage = usageCounter.unavailable(); }
+  res.json(Object.assign({}, payload, { usage }));
 }
 
 module.exports = app;

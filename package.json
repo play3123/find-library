@@ -3,12 +3,16 @@
   "private": true,
   "version": "1.0.0",
   "description": "Library availability search app for Vercel",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "dev": "node scripts/dev-server.js"
+  },
   "engines": {
     "node": "24.x"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "fast-xml-parser": "^4.5.0"
+    "fast-xml-parser": "^5.12.0"
   }
 }
