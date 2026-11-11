@@ -3,7 +3,8 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const state = { books: [], regions: [], districts: [], rows: [], candidateQuery: "", busy: false,
-    finding: false, districtRequest: 0, usage: null, selected: null, mapSequence: 0 };
+    finding: false, districtRequest: 0, usage: null, selected: null, mapSequence: 0,
+    resultBook: null, mapExpanded: false, viewBeforeExpansion: "list" };
   const base = String(window.APP_CONFIG && window.APP_CONFIG.API_BASE || "").replace(/\/$/, "");
   let map, geocoder, mapInfo, mapResizeObserver, mapLayoutFrame, fitAfterLayout = false, revealAfterLayout = false, infoOpen = false,
     overlays = [], points = new Map(), addressCache = new Map(), midnightTimer;
@@ -70,6 +71,56 @@
     $("selectedBook").replaceChildren(); $("selectedBook").hidden = !book || mode() === "isbn";
     if (book) $("selectedBook").append(node("strong", "", book.bookname), node("small", "", `${[book.authors, book.publisher, book.publication_year].filter(Boolean).join(" · ")} · ISBN ${book.isbn13 || "정보 없음"}`));
   }
+  function initBookTools() {
+    ["resultBookTools", "mapBookTools"].forEach((id) => {
+      const host = $(id), actions = node("div", "copy-actions");
+      if (id === "mapBookTools") host.append(node("p", "copy-book-title"));
+      [["bookname", "책 제목 복사"], ["isbn13", "ISBN 복사"]].forEach(([kind, label]) => {
+        const button = node("button", "tool-button", label); button.type = "button"; button.dataset.copy = kind;
+        button.onclick = () => copyBook(kind, host, button); actions.append(button);
+      });
+      const status = node("p", "copy-status"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+      const fallback = node("div", "copy-fallback"); fallback.hidden = true;
+      host.append(actions, status, fallback);
+    });
+  }
+  function updateBookTools() {
+    ["resultBookTools", "mapBookTools"].forEach((id) => {
+      const host = $(id), book = state.resultBook; host.hidden = !book;
+      if (!book) return;
+      const title = host.querySelector(".copy-book-title");
+      if (title) { title.textContent = book.bookname || `ISBN ${book.isbn13}`; title.title = title.textContent; }
+      host.querySelectorAll("[data-copy]").forEach((button) => {
+        button.disabled = !book[button.dataset.copy];
+        button.title = button.disabled ? (book.titlePending ? "책 제목을 확인하고 있습니다." : "책 제목 정보가 없습니다.") : "";
+      });
+      host.querySelector(".copy-status").textContent = book.titlePending ? "책 제목을 확인하고 있습니다." : (!book.bookname ? "제목 정보가 없어 ISBN만 복사할 수 있습니다." : "");
+      host.querySelector(".copy-fallback").hidden = true;
+    });
+  }
+  async function completeBookTitle(book) {
+    try {
+      const data = await request("/api/books/candidates", { query: book.isbn13 });
+      if (state.resultBook !== book) return;
+      const match = (data.rows || []).find((row) => row.isbn13 === book.isbn13);
+      if (match) book.bookname = match.bookname || "";
+    } catch { /* ISBN copying remains available when bibliographic lookup fails. */ }
+    finally { if (state.resultBook === book) { book.titlePending = false; updateBookTools(); } }
+  }
+  async function copyBook(kind, host, button) {
+    const value = state.resultBook && state.resultBook[kind]; if (!value) return;
+    const status = host.querySelector(".copy-status"), fallback = host.querySelector(".copy-fallback");
+    button.disabled = true; fallback.hidden = true;
+    try {
+      await navigator.clipboard.writeText(value);
+      status.textContent = kind === "bookname" ? "책 제목을 복사했습니다." : "ISBN을 복사했습니다.";
+    } catch {
+      status.textContent = "자동 복사를 완료하지 못했습니다. 선택된 텍스트를 직접 복사해 주세요.";
+      const field = node("textarea", "manual-copy"); field.value = value; field.readOnly = true; field.rows = 2;
+      field.setAttribute("aria-label", kind === "bookname" ? "직접 복사할 책 제목" : "직접 복사할 ISBN");
+      fallback.replaceChildren(field); fallback.hidden = false; field.focus(); field.select();
+    } finally { button.disabled = !state.resultBook || !state.resultBook[kind]; }
+  }
   function readiness() {
     const region = chosen(state.regions, "region"), district = chosen(state.districts, "dtl");
     let reason = "";
@@ -135,7 +186,8 @@
     event.preventDefault(); if (state.busy || !readiness()) return;
     const region = chosen(state.regions, "region"), district = chosen(state.districts, "dtl");
     const target = mode() === "keyword" ? { ...chosen(state.books, "bookSelect") } : { isbn13: $("isbnInput").value.trim(), bookname: "" };
-    state.rows = []; $("availableOnly").checked = false; state.selected = null; message();
+    state.rows = []; $("availableOnly").checked = false; state.selected = null; state.resultBook = null; updateBookTools(); message();
+    setMapExpanded(false, { scroll: false });
     setView("list");
     $("libraryList").replaceChildren(); $("emptyState").hidden = true; $("resultMessage").hidden = true;
     $("resultToolbar").hidden = true; $("availableFilter").hidden = true; $("resultControls").hidden = true; $("resultCount").hidden = true; clearMap(); busy(true);
@@ -150,6 +202,8 @@
       const data = await request("/api/search", { isbn13: target.isbn13, query: target.bookname,
         regionCode: region.code, regionName: region.name, dtlCode: district ? district.code : "", dtlName: district ? district.name : "" });
       state.rows = (data.rows || []).map((r, i) => ({ ...r, number: i + 1 }));
+      state.resultBook = { bookname: target.bookname || "", isbn13: target.isbn13, titlePending: !target.bookname };
+      updateBookTools(); if (state.resultBook.titlePending) completeBookTitle(state.resultBook);
       $("resultsHeading").textContent = "찾은 도서관";
       $("resultsSummary").textContent = `${region.name} ${district ? district.name : "전체"} · ${target.bookname || `ISBN ${target.isbn13}`}`;
       $("mapRegion").textContent = `${region.name} ${district ? district.name : "전체"}`;
@@ -184,11 +238,30 @@
     });
     renderMap(rows);
   }
-  function setView(view) {
+  function updateViewControls(view) {
     $("resultLayout").dataset.view = view;
     ["list", "map"].forEach((name) => { $(name + "View").classList.toggle("active", view === name); $(name + "View").setAttribute("aria-pressed", String(view === name)); });
+  }
+  function setView(view) {
+    if (view === "list") setMapExpanded(false, { scroll: false, restoreView: false });
+    updateViewControls(view);
     if (mapInfo) mapInfo.close(); infoOpen = false;
     if (view === "map") layoutMap(!state.selected, true);
+  }
+  function updateMapSizeButton() { $("toggleMapSize").disabled = !state.mapExpanded && !points.size; }
+  function setMapExpanded(value, { scroll = true, restoreView = true } = {}) {
+    const expanded = !!value; if (state.mapExpanded === expanded) return;
+    if (expanded) state.viewBeforeExpansion = $("resultLayout").dataset.view;
+    state.mapExpanded = expanded; $("resultLayout").dataset.mapExpanded = String(expanded);
+    $("toggleMapSize").setAttribute("aria-expanded", String(expanded));
+    $("toggleMapSize").textContent = expanded ? "원래 크기로" : "지도 크게 보기";
+    if (expanded) updateViewControls("map");
+    else if (restoreView) updateViewControls(window.matchMedia("(max-width:720px)").matches ? "map" : state.viewBeforeExpansion);
+    updateMapSizeButton(); layoutMap();
+    if (scroll) {
+      $("toggleMapSize").focus({ preventScroll: true });
+      requestAnimationFrame(() => document.querySelector(".map-pane").scrollIntoView({ block: "start", behavior: "instant" }));
+    }
   }
   function selectLibrary(number, openMap, focusInfo = false) {
     state.selected = number;
@@ -198,7 +271,7 @@
     if (!row) return;
     if (point && map) {
       fitAfterLayout = false;
-      map.relayout(); map.setLevel(4); map.setCenter(point);
+      map.relayout(); if (!map.getBounds().contain(point)) map.setCenter(point);
       showMapInfo(row, point, focusInfo);
     }
     else $("mapStatus").textContent = "이 도서관의 좌표를 아직 확인하지 못했습니다. 주소와 홈페이지를 참고해 주세요.";
@@ -223,7 +296,7 @@
     close.innerHTML = '<svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5"/></svg>';
     const dismiss = () => { mapInfo.close(); infoOpen = false; document.querySelector(`.map-pin[data-number="${row.number}"]`)?.focus({ preventScroll: true }); };
     close.onclick = dismiss;
-    content.onkeydown = (event) => { if (event.key === "Escape") { event.preventDefault(); dismiss(); } };
+    content.onkeydown = (event) => { if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); dismiss(); } };
     const [label, status] = availability(row);
     header.append(name, close); content.append(header, node("span", `status-badge ${status}`, label), node("p", "", row.address || "주소 정보 없음"));
     if (!url) content.append(node("p", "", "등록된 홈페이지가 없습니다."));
@@ -244,7 +317,7 @@
       if (infoOpen) mapInfo.open(map);
     });
   }
-  function clearMap() { state.mapSequence += 1; if (mapInfo) mapInfo.close(); infoOpen = false; fitAfterLayout = false; revealAfterLayout = false; cancelAnimationFrame(mapLayoutFrame); overlays.forEach((o) => o.setMap(null)); overlays = []; points.clear(); $("mapSelection").hidden = true; }
+  function clearMap() { state.mapSequence += 1; if (mapInfo) mapInfo.close(); infoOpen = false; fitAfterLayout = false; revealAfterLayout = false; cancelAnimationFrame(mapLayoutFrame); overlays.forEach((o) => o.setMap(null)); overlays = []; points.clear(); updateMapSizeButton(); $("mapSelection").hidden = true; }
   function fitMap() { if (!map || !points.size) return; const bounds = new kakao.maps.LatLngBounds(); points.forEach((p) => bounds.extend(p)); map.setBounds(bounds); }
   function coordinates(address) {
     if (addressCache.has(address)) return Promise.resolve(addressCache.get(address));
@@ -283,6 +356,7 @@
       overlays.push(overlay);
     });
     layoutMap(true); $("mapStatus").textContent = `${rows.length}곳 중 ${points.size}곳의 위치를 표시했습니다.${points.size < rows.length ? " 일부 주소는 좌표를 확인하지 못했습니다." : ""} 핀을 눌러 이름과 홈페이지를 확인하세요.`;
+    updateMapSizeButton();
   }
   async function initMap() {
     try {
@@ -305,6 +379,7 @@
     } catch (error) { $("mapStatus").textContent = error.message; }
   }
   async function init() {
+    initBookTools();
     $("searchForm").onsubmit = search; $("findBtn").onclick = candidates;
     document.querySelectorAll('[name="searchMode"]').forEach((el) => el.addEventListener("change", switchMode));
     $("keywordInput").oninput = () => { if ($("keywordInput").value.trim() !== state.candidateQuery) { state.books = []; options($("bookSelect"), [], "도서 후보를 다시 조회하세요", () => ""); $("bookSelect").disabled = true; $("candidateHint").textContent = "후보는 한 번에 최대 30개까지 조회합니다."; updateBook(); } readiness(); };
@@ -313,6 +388,8 @@
     $("region").onchange = changeRegion; $("dtl").onchange = readiness;
     $("availableOnly").onchange = () => { state.selected = null; renderResults(); }; $("listView").onclick = () => setView("list"); $("mapView").onclick = () => setView("map");
     $("refreshUsage").onclick = refreshUsage;
+    $("toggleMapSize").onclick = () => setMapExpanded(!state.mapExpanded);
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !event.defaultPrevented && state.mapExpanded) { event.preventDefault(); setMapExpanded(false); } });
     document.querySelector('.text-link').onclick = () => { $("help").open = true; };
     document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshUsage(); });
     setInterval(() => { if (!document.hidden) refreshUsage(); }, 60000);

@@ -35,7 +35,6 @@ a:hover { color: var(--accent-hover); text-decoration-thickness: 2px; }
 .brand-line { display: flex; align-items: baseline; gap: 20px; }
 h1 { font-size: 46px; line-height: 1.2; }
 .brand { font-family: var(--serif); font-size: 17px; font-weight: 400; white-space: nowrap; color: var(--ink); text-decoration: none; }
-.masthead-copy p { color: var(--muted); margin-top: 19px; }
 .text-link { font-size: 12px; white-space: nowrap; }
 .usage-area { display: flex; align-items: flex-start; gap: 6px; padding-top: 4px; flex-shrink: 0; }
 .usage-details { position: relative; font-size: 12px; text-align: right; }
@@ -103,10 +102,29 @@ label { display: block; font-size: 12px; color: var(--muted); font-weight: 400; 
 .empty-state h3 { font-size: 22px; color: var(--ink); margin-bottom: 14px; }
 .empty-state p { font-size: 14px; line-height: 1.9; }
 .map-pane { position: sticky; top: 22px; align-self: start; min-width: 0; }
-.map-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 19px; }
+.map-heading { padding-bottom: 15px; }
+.map-title-line,.map-meta-line { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.map-meta-line { margin-top: 7px; }
 .map-heading h3 { font-size: 24px; }
-.map-heading p { color: var(--muted); font-size: 12px; margin-top: 7px; }
-.map-heading>span { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.map-heading p,.map-meta-line>span { color: var(--muted); font-size: 12px; }
+.map-meta-line>span { white-space: nowrap; }
+.tool-button { min-height: 36px; padding: 6px 10px; border: 1px solid var(--field-border); border-radius: 0; background: var(--white); color: var(--accent); font-size: 12px; white-space: nowrap; }
+.tool-button:hover { background: var(--soft); border-color: var(--accent); }
+.tool-button:disabled { color: #72796d; border-color: var(--line); background: #f0f2ec; }
+.book-copy { min-width: 0; }
+.result-copy { grid-column: 1/-1; margin-top: 12px; }
+.copy-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.copy-book-title { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px; }
+.map-book-copy { margin-bottom: 14px; }
+.copy-status { color: var(--accent); font-size: 12px; margin-top: 7px; overflow-wrap: anywhere; }
+.copy-status:empty { display: none; }
+.copy-fallback { margin-top: 7px; }
+.manual-copy { width: 100%; padding: 8px; border: 1px solid var(--field-border); border-radius: 0; color: var(--ink); font: 13px/1.6 var(--sans); background: var(--white); resize: vertical; }
+.results-layout[data-map-expanded=true] { grid-template-columns: minmax(0,1fr); row-gap: 20px; }
+.results-layout[data-map-expanded=true] .list-pane,.results-layout[data-map-expanded=true] .result-copy { display: none; }
+.results-layout[data-map-expanded=true] .map-pane { position: relative; top: auto; }
+.results-layout[data-map-expanded=true] .map { height: clamp(420px,72svh,780px); }
+.map-pane { scroll-margin-top: 20px; }
 .legend-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin: 0 4px 0 8px; }
 .legend-dot.unavailable { background: var(--amber); }
 .map { height: clamp(320px,44svh,500px); min-height: 0; width: 100%; position: relative; overflow: hidden; isolation: isolate; border-top: 1px solid var(--ink); background: var(--soft); }
@@ -180,7 +198,6 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15
   .brand-line { margin-top: 8px; justify-content: space-between; }
   h1 { font-size: 31px; line-height: 1.35; letter-spacing: -.04em; }
   .brand { display: block; font-size: 15px; }
-  .masthead-copy p { font-size: 13px; margin-top: 12px; }
   .usage-area { align-items: center; gap: 3px; margin-top: 12px; padding: 0; }
   .usage-details { text-align: left; }
   .usage-details summary { display: flex; align-items: baseline; gap: 9px; }
@@ -217,7 +234,6 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15
   .map { height: clamp(320px,58svh,460px); }
   .map-heading { padding-bottom: 15px; }
   .map-heading h3 { font-size: 23px; }
-  .map-heading>span { font-size: 12px; }
   .map-info { width: 230px; }
   .map-info-name { font-size: 17px; }
   .library-item { padding: 20px 0; }

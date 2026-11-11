@@ -525,6 +525,22 @@
       "description": "Shared daily usage count with a flat explanatory disclosure.",
       "html": "<div class=\"ds-sample\"><details class=\"ds-usage-details\"><summary><span>오늘 전체 사용량</span><strong>확인 중</strong><span class=\"ds-info-mark\" aria-hidden=\"true\">i</span></summary><div class=\"ds-usage-help\"><strong>모든 이용자의 호출 합계</strong><p>이 사이트의 정보나루 API 호출을 합산합니다. 매일 한국시간 00:00에 날짜가 바뀝니다.</p></div></details></div>",
       "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample p{margin: 0;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample .ds-usage-details{position: relative; font-size: 12px; text-align: right;}.ds-sample .ds-usage-details summary{list-style: none; cursor: pointer;}.ds-sample .ds-usage-details summary::-webkit-details-marker{display: none;}.ds-sample .ds-usage-details summary>span:first-child{display: block; color: var(--muted, #5b6258);}.ds-sample .ds-usage-details summary>strong{display: inline-block; font: 400 22px/1.7 var(--serif, Georgia, \"Times New Roman\", serif); font-variant-numeric: tabular-nums; white-space: nowrap;}.ds-sample .ds-info-mark{display: inline-flex; width: 15px; height: 15px; margin-left: 6px; border: 1px solid var(--field-border, #b7beb2); border-radius: 50%; align-items: center; justify-content: center; color: var(--muted, #5b6258); font-size: 11px;}.ds-sample .ds-usage-help{position: absolute; right: -28px; top: 65px; width: 330px; padding: 20px; z-index: 1200; background: var(--white, #fff); color: var(--ink, #20201e); text-align: left; border: 1px solid var(--field-border, #b7beb2);}.ds-sample .ds-usage-help strong{font-size: 14px;}.ds-sample .ds-usage-help p{font-size: 13px; margin-top: 8px; color: var(--muted, #5b6258);}@media(max-width:720px){.ds-sample .ds-usage-details{text-align: left;}.ds-sample .ds-usage-details summary{display: flex; align-items: baseline; gap: 9px;}.ds-sample .ds-usage-details summary>strong{font-size: 18px;}.ds-sample .ds-info-mark{margin-left: 0;}.ds-sample .ds-usage-help{left: 0; right: auto; top: 38px; width: min(330px,calc(100vw - 44px));}}"
+    },
+    {
+      "name": "Map size control",
+      "kind": "button",
+      "refersTo": "button-tool",
+      "description": "Expand the same map to full content width and restore it without changing zoom.",
+      "html": "<div class=\"ds-sample\"><button class=\"ds-tool\" type=\"button\" aria-expanded=\"false\">지도 크게 보기</button></div>",
+      "css": ".ds-sample{font-family:var(--sans,\"Inter\",\"Noto Sans KR\",system-ui,sans-serif);font-size:14px;line-height:1.65;color:var(--ink,#20201e)}.ds-sample button{font:inherit}.ds-sample .ds-tool{min-height:36px;padding:6px 10px;border:1px solid var(--field-border,#b7beb2);border-radius:0;background:var(--white,#fff);color:var(--accent,#52665b);font-size:12px;white-space:nowrap;cursor:pointer}.ds-sample .ds-tool:hover{background:var(--soft,#edf0e9);border-color:var(--accent,#52665b)}.ds-sample .ds-tool:disabled{color:#72796d;border-color:var(--line,#d7dbd1);background:#f0f2ec;cursor:not-allowed}.ds-sample .ds-tool:focus-visible{outline:2px solid var(--accent,#52665b);outline-offset:4px}"
+    },
+    {
+      "name": "Book copy actions",
+      "kind": "custom",
+      "refersTo": "button-tool",
+      "description": "Copy title or ISBN from the current search result snapshot; status and manual fallback remain explicit.",
+      "html": "<div class=\"ds-sample\"><div class=\"ds-copy-actions\"><button class=\"ds-tool\" type=\"button\">책 제목 복사</button><button class=\"ds-tool\" type=\"button\">ISBN 복사</button></div></div>",
+      "css": ".ds-sample{font-family:var(--sans,\"Inter\",\"Noto Sans KR\",system-ui,sans-serif);font-size:14px;line-height:1.65;color:var(--ink,#20201e)}.ds-sample button{font:inherit}.ds-sample .ds-tool{min-height:36px;padding:6px 10px;border:1px solid var(--field-border,#b7beb2);border-radius:0;background:var(--white,#fff);color:var(--accent,#52665b);font-size:12px;white-space:nowrap;cursor:pointer}.ds-sample .ds-tool:hover{background:var(--soft,#edf0e9);border-color:var(--accent,#52665b)}.ds-sample .ds-tool:disabled{color:#72796d;border-color:var(--line,#d7dbd1);background:#f0f2ec;cursor:not-allowed}.ds-sample .ds-tool:focus-visible{outline:2px solid var(--accent,#52665b);outline-offset:4px}.ds-sample .ds-copy-actions{display:flex;flex-wrap:wrap;gap:8px}"
     }
   ],
   "narrative": {
@@ -560,7 +576,8 @@
       "Do 검색과 결과를 가는 구분선으로 나누고 직각 필드와 연속 목록 행을 유지한다.",
       "Do 목록과 지도에 같은 번호를 쓰고 지도 높이를 목록 길이와 독립적으로 유지한다.",
       "Do 모바일 지도 전환 뒤 지도 크기와 선택 도서관의 가시성을 다시 맞춘다.",
-      "Do 실제 홈페이지 URL이 있을 때 도서관 이름을 링크로 표시하고 실패·미확인 상태를 문구로 남긴다."
+      "Do 실제 홈페이지 URL이 있을 때 도서관 이름을 링크로 표시하고 실패·미확인 상태를 문구로 남긴다.",
+      "Do 지도 영역 크기와 도서관 선택을 바꿀 때 현재 지도 배율을 유지하고, 복사는 검색 결과를 만든 책의 스냅샷을 사용한다."
     ],
     "donts": [
       "Don't 숲색 헤더, 둥근 tonal 검색 패널, 단일 산세리프 제목으로 이전 시각 체계를 되살리지 않는다.",
