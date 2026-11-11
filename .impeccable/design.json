@@ -376,7 +376,7 @@
       },
       "map-title": {
         "displayName": "오른쪽 지도 열의 제목",
-        "purpose": "오른쪽 지도 열의 제목"
+        "purpose": "오른쪽 지도 열의 제목. 결과 제목과 동일한 PC26px·모바일24px·줄높이1.5를 사용한다."
       },
       "result-title": {
         "displayName": "목록 행의 도서관명",

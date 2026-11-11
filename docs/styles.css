@@ -86,7 +86,7 @@ label { display: block; font-size: 12px; color: var(--muted); font-weight: 400; 
 .results { min-width: 0; outline: none; padding-top: 30px; }
 .results-heading { display: grid; grid-template-columns: 1fr auto; align-items: baseline; column-gap: 12px; }
 .results-title { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
-.results-heading h2 { font-size: 26px; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+.results-heading h2,.map-heading h3 { font-size: 26px; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
 .results-heading p { grid-column: 1/-1; font-size: 12px; margin-top: 7px; color: var(--muted); overflow-wrap: anywhere; }
 .result-controls { grid-column: 2; grid-row: 1; }
 .result-count { font: 400 22px/1.5 var(--serif); white-space: nowrap; font-variant-numeric: tabular-nums; }
@@ -106,7 +106,6 @@ label { display: block; font-size: 12px; color: var(--muted); font-weight: 400; 
 .map-title-line,.map-meta-line { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .map-meta-line { margin-top: 7px; }
 .map-actions { display: flex; justify-content: flex-start; margin-top: 12px; }
-.map-heading h3 { font-size: 24px; }
 .map-heading p,.map-meta-line>span { color: var(--muted); font-size: 12px; }
 .map-meta-line>span { white-space: nowrap; }
 .tool-button { min-height: 36px; padding: 6px 10px; border: 1px solid var(--field-border); border-radius: 0; background: var(--white); color: var(--accent); font-size: 12px; white-space: nowrap; }
@@ -237,7 +236,7 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15
   .results-layout { grid-template-columns: 1fr; gap: 0; }
   .results-heading { display: block; }
   .result-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; margin-bottom: 15px; }
-  .results-heading h2 { font-size: 24px; }
+  .results-heading h2,.map-heading h3 { font-size: 24px; }
   .result-count { font-size: 19px; }
   .result-toolbar { display: flex; justify-content: flex-end; }
   .result-toolbar:not([hidden]) .view-switch { display: flex; gap: 16px; }
@@ -248,7 +247,6 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15
   .map-pane { position: relative; top: auto; }
   .map { height: clamp(320px,58svh,460px); }
   .map-heading { padding-bottom: 15px; }
-  .map-heading h3 { font-size: 23px; }
   .map-info { width: 230px; }
   .map-info-name { font-size: 17px; }
   .library-item { padding: 20px 0; }
