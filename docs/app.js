@@ -193,6 +193,13 @@
     else $("mapStatus").textContent = "이 도서관의 좌표를 아직 확인하지 못했습니다. 주소와 홈페이지를 참고해 주세요.";
     const box = $("mapSelection"); box.hidden = false; box.replaceChildren();
     const url = safeUrl(row.homepage); box.append(url ? link(`${number}. ${row.libName}`, url) : node("strong", "", `${number}. ${row.libName}`), node("p", "", row.address));
+    box.tabIndex = -1;
+    box.setAttribute("role", "region");
+    box.setAttribute("aria-label", `선택한 도서관: ${row.libName}`);
+    if (openMap && window.matchMedia("(max-width:720px)").matches) {
+      box.focus({ preventScroll: true });
+      box.scrollIntoView({ block: "nearest", behavior: "instant" });
+    }
   }
   function clearMap() { state.mapSequence += 1; overlays.forEach((o) => o.setMap(null)); overlays = []; points.clear(); $("mapSelection").hidden = true; }
   function fitMap() { if (!map || !points.size) return; const bounds = new kakao.maps.LatLngBounds(); points.forEach((p) => bounds.extend(p)); map.setBounds(bounds); }
