@@ -1,117 +1,57 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-11T02:02:06.655Z",
+  "generatedAt": "2026-11-11T03:26:52.717423Z",
   "title": "Design System: Find Library",
   "extensions": {
     "colorMeta": {
-      "forest": {
-        "role": "primary",
-        "displayName": "숲색 표지",
-        "canonical": "#183f35",
-        "tonalRamp": [
-          "oklch(15% 0.0160 174.01)",
-          "oklch(26% 0.0277 174.01)",
-          "oklch(37% 0.0394 174.01)",
-          "oklch(48% 0.0479 174.01)",
-          "oklch(60% 0.0479 174.01)",
-          "oklch(72% 0.0479 174.01)",
-          "oklch(84% 0.0479 174.01)",
-          "oklch(95% 0.0160 174.01)"
-        ]
-      },
-      "green": {
-        "role": "primary",
-        "displayName": "길찾기 녹색",
-        "canonical": "#24624c",
-        "tonalRamp": [
-          "oklch(15% 0.0246 166.58)",
-          "oklch(26% 0.0426 166.58)",
-          "oklch(37% 0.0606 166.58)",
-          "oklch(48% 0.0737 166.58)",
-          "oklch(60% 0.0737 166.58)",
-          "oklch(72% 0.0737 166.58)",
-          "oklch(84% 0.0737 166.58)",
-          "oklch(95% 0.0246 166.58)"
-        ]
-      },
-      "green-hover": {
-        "role": "primary",
-        "displayName": "행동 녹색 hover",
-        "canonical": "#164b38",
-        "tonalRamp": [
-          "oklch(15% 0.0216 165.65)",
-          "oklch(26% 0.0375 165.65)",
-          "oklch(37% 0.0534 165.65)",
-          "oklch(48% 0.0649 165.65)",
-          "oklch(60% 0.0649 165.65)",
-          "oklch(72% 0.0649 165.65)",
-          "oklch(84% 0.0649 165.65)",
-          "oklch(95% 0.0216 165.65)"
-        ]
-      },
       "ink": {
         "role": "neutral",
-        "displayName": "안내 잉크",
-        "canonical": "#20382e",
+        "displayName": "본문 잉크",
+        "canonical": "#20201e",
         "tonalRamp": [
-          "oklch(15% 0.0117 165.97)",
-          "oklch(26% 0.0204 165.97)",
-          "oklch(37% 0.0290 165.97)",
-          "oklch(48% 0.0352 165.97)",
-          "oklch(60% 0.0352 165.97)",
-          "oklch(72% 0.0352 165.97)",
-          "oklch(84% 0.0352 165.97)",
-          "oklch(95% 0.0117 165.97)"
+          "oklch(15% 0.0011 106.67)",
+          "oklch(26% 0.0024 106.67)",
+          "oklch(37% 0.0034 106.67)",
+          "oklch(48% 0.0037 106.67)",
+          "oklch(60% 0.0037 106.67)",
+          "oklch(72% 0.0034 106.67)",
+          "oklch(84% 0.0024 106.67)",
+          "oklch(95% 0.0009 106.67)"
         ]
       },
       "muted": {
         "role": "neutral",
         "displayName": "보조 잉크",
-        "canonical": "#56685f",
+        "canonical": "#5b6258",
         "tonalRamp": [
-          "oklch(15% 0.0087 163.70)",
-          "oklch(26% 0.0150 163.70)",
-          "oklch(37% 0.0214 163.70)",
-          "oklch(48% 0.0260 163.70)",
-          "oklch(60% 0.0260 163.70)",
-          "oklch(72% 0.0260 163.70)",
-          "oklch(84% 0.0260 163.70)",
-          "oklch(95% 0.0087 163.70)"
+          "oklch(15% 0.0054 136.16)",
+          "oklch(26% 0.0116 136.16)",
+          "oklch(37% 0.0161 136.16)",
+          "oklch(48% 0.0179 136.16)",
+          "oklch(60% 0.0179 136.16)",
+          "oklch(72% 0.0161 136.16)",
+          "oklch(84% 0.0116 136.16)",
+          "oklch(95% 0.0045 136.16)"
         ]
       },
       "ground": {
         "role": "neutral",
         "displayName": "밝은 지면",
-        "canonical": "#eef2ed",
+        "canonical": "#f8f8f4",
         "tonalRamp": [
-          "oklch(15% 0.0026 139.44)",
-          "oklch(26% 0.0045 139.44)",
-          "oklch(37% 0.0065 139.44)",
-          "oklch(48% 0.0079 139.44)",
-          "oklch(60% 0.0079 139.44)",
-          "oklch(72% 0.0079 139.44)",
-          "oklch(84% 0.0079 139.44)",
-          "oklch(95% 0.0026 139.44)"
-        ]
-      },
-      "panel": {
-        "role": "neutral",
-        "displayName": "검색 작업면",
-        "canonical": "#e4ece3",
-        "tonalRamp": [
-          "oklch(15% 0.0049 142.23)",
-          "oklch(26% 0.0085 142.23)",
-          "oklch(37% 0.0121 142.23)",
-          "oklch(48% 0.0147 142.23)",
-          "oklch(60% 0.0147 142.23)",
-          "oklch(72% 0.0147 142.23)",
-          "oklch(84% 0.0147 142.23)",
-          "oklch(95% 0.0049 142.23)"
+          "oklch(15% 0.0016 106.50)",
+          "oklch(26% 0.0034 106.50)",
+          "oklch(37% 0.0048 106.50)",
+          "oklch(48% 0.0053 106.50)",
+          "oklch(60% 0.0053 106.50)",
+          "oklch(72% 0.0048 106.50)",
+          "oklch(84% 0.0034 106.50)",
+          "oklch(95% 0.0013 106.50)"
         ]
       },
       "white": {
         "role": "neutral",
-        "displayName": "흰 결과면",
+        "displayName": "흰 면",
         "canonical": "#fff",
         "tonalRamp": [
           "oklch(15% 0.0000 0.00)",
@@ -124,337 +64,384 @@
           "oklch(95% 0.0000 0.00)"
         ]
       },
+      "accent": {
+        "role": "primary",
+        "displayName": "회녹색",
+        "canonical": "#52665b",
+        "tonalRamp": [
+          "oklch(15% 0.0089 161.02)",
+          "oklch(26% 0.0194 161.02)",
+          "oklch(37% 0.0268 161.02)",
+          "oklch(48% 0.0298 161.02)",
+          "oklch(60% 0.0298 161.02)",
+          "oklch(72% 0.0268 161.02)",
+          "oklch(84% 0.0194 161.02)",
+          "oklch(95% 0.0075 161.02)"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "짙은 회녹색",
+        "canonical": "#354a3d",
+        "tonalRamp": [
+          "oklch(15% 0.0103 157.21)",
+          "oklch(26% 0.0223 157.21)",
+          "oklch(37% 0.0309 157.21)",
+          "oklch(48% 0.0343 157.21)",
+          "oklch(60% 0.0343 157.21)",
+          "oklch(72% 0.0309 157.21)",
+          "oklch(84% 0.0223 157.21)",
+          "oklch(95% 0.0086 157.21)"
+        ]
+      },
       "line": {
         "role": "neutral",
-        "displayName": "잎맥 구분선",
-        "canonical": "#d5dfd4",
+        "displayName": "행 구분선",
+        "canonical": "#d7dbd1",
         "tonalRamp": [
-          "oklch(15% 0.0061 142.81)",
-          "oklch(26% 0.0106 142.81)",
-          "oklch(37% 0.0150 142.81)",
-          "oklch(48% 0.0183 142.81)",
-          "oklch(60% 0.0183 142.81)",
-          "oklch(72% 0.0183 142.81)",
-          "oklch(84% 0.0183 142.81)",
-          "oklch(95% 0.0061 142.81)"
+          "oklch(15% 0.0042 124.58)",
+          "oklch(26% 0.0092 124.58)",
+          "oklch(37% 0.0127 124.58)",
+          "oklch(48% 0.0142 124.58)",
+          "oklch(60% 0.0142 124.58)",
+          "oklch(72% 0.0127 124.58)",
+          "oklch(84% 0.0092 124.58)",
+          "oklch(95% 0.0035 124.58)"
+        ]
+      },
+      "field-border": {
+        "role": "neutral",
+        "displayName": "필드 경계",
+        "canonical": "#b7beb2",
+        "tonalRamp": [
+          "oklch(15% 0.0055 131.91)",
+          "oklch(26% 0.0119 131.91)",
+          "oklch(37% 0.0165 131.91)",
+          "oklch(48% 0.0184 131.91)",
+          "oklch(60% 0.0184 131.91)",
+          "oklch(72% 0.0165 131.91)",
+          "oklch(84% 0.0119 131.91)",
+          "oklch(95% 0.0046 131.91)"
+        ]
+      },
+      "soft": {
+        "role": "neutral",
+        "displayName": "옅은 회녹색",
+        "canonical": "#edf0e9",
+        "tonalRamp": [
+          "oklch(15% 0.0029 125.68)",
+          "oklch(26% 0.0064 125.68)",
+          "oklch(37% 0.0088 125.68)",
+          "oklch(48% 0.0098 125.68)",
+          "oklch(60% 0.0098 125.68)",
+          "oklch(72% 0.0088 125.68)",
+          "oklch(84% 0.0064 125.68)",
+          "oklch(95% 0.0025 125.68)"
         ]
       },
       "success-bg": {
-        "role": "neutral",
+        "role": "secondary",
         "displayName": "대출가능 바탕",
-        "canonical": "#e2f1e7",
+        "canonical": "#e9efe9",
         "tonalRamp": [
-          "oklch(15% 0.0069 156.81)",
-          "oklch(26% 0.0120 156.81)",
-          "oklch(37% 0.0170 156.81)",
-          "oklch(48% 0.0207 156.81)",
-          "oklch(60% 0.0207 156.81)",
-          "oklch(72% 0.0207 156.81)",
-          "oklch(84% 0.0207 156.81)",
-          "oklch(95% 0.0069 156.81)"
+          "oklch(15% 0.0031 145.49)",
+          "oklch(26% 0.0066 145.49)",
+          "oklch(37% 0.0092 145.49)",
+          "oklch(48% 0.0102 145.49)",
+          "oklch(60% 0.0102 145.49)",
+          "oklch(72% 0.0092 145.49)",
+          "oklch(84% 0.0066 145.49)",
+          "oklch(95% 0.0025 145.49)"
         ]
       },
-      "success-text": {
-        "role": "neutral",
+      "success": {
+        "role": "secondary",
         "displayName": "대출가능 문자",
-        "canonical": "#235436",
+        "canonical": "#355543",
         "tonalRamp": [
-          "oklch(15% 0.0246 154.38)",
-          "oklch(26% 0.0426 154.38)",
-          "oklch(37% 0.0607 154.38)",
-          "oklch(48% 0.0738 154.38)",
-          "oklch(60% 0.0738 154.38)",
-          "oklch(72% 0.0738 154.38)",
-          "oklch(84% 0.0738 154.38)",
-          "oklch(95% 0.0246 154.38)"
+          "oklch(15% 0.0145 158.77)",
+          "oklch(26% 0.0315 158.77)",
+          "oklch(37% 0.0436 158.77)",
+          "oklch(48% 0.0485 158.77)",
+          "oklch(60% 0.0485 158.77)",
+          "oklch(72% 0.0436 158.77)",
+          "oklch(84% 0.0315 158.77)",
+          "oklch(95% 0.0121 158.77)"
         ]
       },
       "amber": {
         "role": "secondary",
         "displayName": "대출중 황토",
-        "canonical": "#865119",
+        "canonical": "#795125",
         "tonalRamp": [
-          "oklch(15% 0.0328 62.44)",
-          "oklch(26% 0.0568 62.44)",
-          "oklch(37% 0.0809 62.44)",
-          "oklch(48% 0.0984 62.44)",
-          "oklch(60% 0.0984 62.44)",
-          "oklch(72% 0.0984 62.44)",
-          "oklch(84% 0.0984 62.44)",
-          "oklch(95% 0.0328 62.44)"
+          "oklch(15% 0.0240 66.15)",
+          "oklch(26% 0.0520 66.15)",
+          "oklch(37% 0.0720 66.15)",
+          "oklch(48% 0.0800 66.15)",
+          "oklch(60% 0.0800 66.15)",
+          "oklch(72% 0.0720 66.15)",
+          "oklch(84% 0.0520 66.15)",
+          "oklch(95% 0.0200 66.15)"
         ]
       },
       "amber-bg": {
         "role": "secondary",
         "displayName": "대출중 바탕",
-        "canonical": "#fff0d9",
+        "canonical": "#f4ede3",
         "tonalRamp": [
-          "oklch(15% 0.0114 78.68)",
-          "oklch(26% 0.0198 78.68)",
-          "oklch(37% 0.0282 78.68)",
-          "oklch(48% 0.0343 78.68)",
-          "oklch(60% 0.0343 78.68)",
-          "oklch(72% 0.0343 78.68)",
-          "oklch(84% 0.0343 78.68)",
-          "oklch(95% 0.0114 78.68)"
+          "oklch(15% 0.0046 77.07)",
+          "oklch(26% 0.0100 77.07)",
+          "oklch(37% 0.0138 77.07)",
+          "oklch(48% 0.0153 77.07)",
+          "oklch(60% 0.0153 77.07)",
+          "oklch(72% 0.0138 77.07)",
+          "oklch(84% 0.0100 77.07)",
+          "oklch(95% 0.0038 77.07)"
         ]
       },
       "error": {
         "role": "secondary",
-        "displayName": "오류 적색",
-        "canonical": "#a12f32",
+        "displayName": "오류 적갈색",
+        "canonical": "#983d38",
         "tonalRamp": [
-          "oklch(15% 0.0499 23.44)",
-          "oklch(26% 0.0865 23.44)",
-          "oklch(37% 0.1232 23.44)",
-          "oklch(48% 0.1498 23.44)",
-          "oklch(60% 0.1498 23.44)",
-          "oklch(72% 0.1498 23.44)",
-          "oklch(84% 0.1498 23.44)",
-          "oklch(95% 0.0499 23.44)"
+          "oklch(15% 0.0370 25.88)",
+          "oklch(26% 0.0803 25.88)",
+          "oklch(37% 0.1111 25.88)",
+          "oklch(48% 0.1235 25.88)",
+          "oklch(60% 0.1235 25.88)",
+          "oklch(72% 0.1111 25.88)",
+          "oklch(84% 0.0803 25.88)",
+          "oklch(95% 0.0309 25.88)"
         ]
       },
       "error-bg": {
         "role": "secondary",
         "displayName": "오류 바탕",
-        "canonical": "#fff0ee",
+        "canonical": "#faf0ed",
         "tonalRamp": [
-          "oklch(15% 0.0055 26.65)",
-          "oklch(26% 0.0095 26.65)",
-          "oklch(37% 0.0136 26.65)",
-          "oklch(48% 0.0165 26.65)",
-          "oklch(60% 0.0165 26.65)",
-          "oklch(72% 0.0165 26.65)",
-          "oklch(84% 0.0165 26.65)",
-          "oklch(95% 0.0055 26.65)"
+          "oklch(15% 0.0035 37.42)",
+          "oklch(26% 0.0075 37.42)",
+          "oklch(37% 0.0104 37.42)",
+          "oklch(48% 0.0116 37.42)",
+          "oklch(60% 0.0116 37.42)",
+          "oklch(72% 0.0104 37.42)",
+          "oklch(84% 0.0075 37.42)",
+          "oklch(95% 0.0029 37.42)"
         ]
       },
       "unknown-bg": {
         "role": "neutral",
         "displayName": "미확인 바탕",
-        "canonical": "#e9edeb",
+        "canonical": "#e9ece6",
         "tonalRamp": [
-          "oklch(15% 0.0017 165.00)",
-          "oklch(26% 0.0029 165.00)",
-          "oklch(37% 0.0041 165.00)",
-          "oklch(48% 0.0050 165.00)",
-          "oklch(60% 0.0050 165.00)",
-          "oklch(72% 0.0050 165.00)",
-          "oklch(84% 0.0050 165.00)",
-          "oklch(95% 0.0017 165.00)"
+          "oklch(15% 0.0026 128.56)",
+          "oklch(26% 0.0056 128.56)",
+          "oklch(37% 0.0077 128.56)",
+          "oklch(48% 0.0086 128.56)",
+          "oklch(60% 0.0086 128.56)",
+          "oklch(72% 0.0077 128.56)",
+          "oklch(84% 0.0056 128.56)",
+          "oklch(95% 0.0021 128.56)"
         ]
       },
       "unknown-text": {
         "role": "neutral",
         "displayName": "미확인 문자",
-        "canonical": "#536159",
+        "canonical": "#5d665b",
         "tonalRamp": [
-          "oklch(15% 0.0071 160.46)",
-          "oklch(26% 0.0124 160.46)",
-          "oklch(37% 0.0176 160.46)",
-          "oklch(48% 0.0214 160.46)",
-          "oklch(60% 0.0214 160.46)",
-          "oklch(72% 0.0214 160.46)",
-          "oklch(84% 0.0214 160.46)",
-          "oklch(95% 0.0071 160.46)"
+          "oklch(15% 0.0061 140.00)",
+          "oklch(26% 0.0133 140.00)",
+          "oklch(37% 0.0184 140.00)",
+          "oklch(48% 0.0204 140.00)",
+          "oklch(60% 0.0204 140.00)",
+          "oklch(72% 0.0184 140.00)",
+          "oklch(84% 0.0133 140.00)",
+          "oklch(95% 0.0051 140.00)"
         ]
       },
       "unknown-pin": {
         "role": "neutral",
         "displayName": "미확인 핀",
-        "canonical": "#64726b",
+        "canonical": "#677168",
         "tonalRamp": [
-          "oklch(15% 0.0067 164.13)",
-          "oklch(26% 0.0115 164.13)",
-          "oklch(37% 0.0164 164.13)",
-          "oklch(48% 0.0200 164.13)",
-          "oklch(60% 0.0200 164.13)",
-          "oklch(72% 0.0200 164.13)",
-          "oklch(84% 0.0200 164.13)",
-          "oklch(95% 0.0067 164.13)"
+          "oklch(15% 0.0055 148.21)",
+          "oklch(26% 0.0119 148.21)",
+          "oklch(37% 0.0165 148.21)",
+          "oklch(48% 0.0184 148.21)",
+          "oklch(60% 0.0184 148.21)",
+          "oklch(72% 0.0165 148.21)",
+          "oklch(84% 0.0119 148.21)",
+          "oklch(95% 0.0046 148.21)"
         ]
       },
       "selected-row": {
         "role": "neutral",
-        "displayName": "선택 지면",
-        "canonical": "#f0f6ec",
+        "displayName": "선택 행",
+        "canonical": "#f0f3eb",
         "tonalRamp": [
-          "oklch(15% 0.0049 132.47)",
-          "oklch(26% 0.0085 132.47)",
-          "oklch(37% 0.0120 132.47)",
-          "oklch(48% 0.0146 132.47)",
-          "oklch(60% 0.0146 132.47)",
-          "oklch(72% 0.0146 132.47)",
-          "oklch(84% 0.0146 132.47)",
-          "oklch(95% 0.0049 132.47)"
+          "oklch(15% 0.0033 123.46)",
+          "oklch(26% 0.0072 123.46)",
+          "oklch(37% 0.0099 123.46)",
+          "oklch(48% 0.0110 123.46)",
+          "oklch(60% 0.0110 123.46)",
+          "oklch(72% 0.0099 123.46)",
+          "oklch(84% 0.0072 123.46)",
+          "oklch(95% 0.0028 123.46)"
         ]
       },
-      "secondary": {
+      "field-disabled-bg": {
         "role": "neutral",
-        "displayName": "보조 행동",
-        "canonical": "#d0dfd0",
+        "displayName": "비활성 필드 바탕",
+        "canonical": "#f0f2ec",
         "tonalRamp": [
-          "oklch(15% 0.0086 145.35)",
-          "oklch(26% 0.0149 145.35)",
-          "oklch(37% 0.0213 145.35)",
-          "oklch(48% 0.0259 145.35)",
-          "oklch(60% 0.0259 145.35)",
-          "oklch(72% 0.0259 145.35)",
-          "oklch(84% 0.0259 145.35)",
-          "oklch(95% 0.0086 145.35)"
+          "oklch(15% 0.0025 121.63)",
+          "oklch(26% 0.0053 121.63)",
+          "oklch(37% 0.0074 121.63)",
+          "oklch(48% 0.0082 121.63)",
+          "oklch(60% 0.0082 121.63)",
+          "oklch(72% 0.0074 121.63)",
+          "oklch(84% 0.0053 121.63)",
+          "oklch(95% 0.0021 121.63)"
         ]
       },
-      "secondary-hover": {
+      "field-disabled-text": {
         "role": "neutral",
-        "displayName": "보조 행동 hover",
-        "canonical": "#c1d3bf",
+        "displayName": "비활성 필드 문자",
+        "canonical": "#72796d",
         "tonalRamp": [
-          "oklch(15% 0.0112 142.47)",
-          "oklch(26% 0.0194 142.47)",
-          "oklch(37% 0.0276 142.47)",
-          "oklch(48% 0.0335 142.47)",
-          "oklch(60% 0.0335 142.47)",
-          "oklch(72% 0.0335 142.47)",
-          "oklch(84% 0.0335 142.47)",
-          "oklch(95% 0.0112 142.47)"
+          "oklch(15% 0.0060 132.02)",
+          "oklch(26% 0.0130 132.02)",
+          "oklch(37% 0.0179 132.02)",
+          "oklch(48% 0.0199 132.02)",
+          "oklch(60% 0.0199 132.02)",
+          "oklch(72% 0.0179 132.02)",
+          "oklch(84% 0.0130 132.02)",
+          "oklch(95% 0.0050 132.02)"
         ]
       },
-      "field-border": {
+      "button-hover": {
         "role": "neutral",
-        "displayName": "입력 경계",
-        "canonical": "#aebfae",
+        "displayName": "검색 버튼 hover",
+        "canonical": "#3b4038",
         "tonalRamp": [
-          "oklch(15% 0.0101 145.28)",
-          "oklch(26% 0.0174 145.28)",
-          "oklch(37% 0.0248 145.28)",
-          "oklch(48% 0.0302 145.28)",
-          "oklch(60% 0.0302 145.28)",
-          "oklch(72% 0.0302 145.28)",
-          "oklch(84% 0.0302 145.28)",
-          "oklch(95% 0.0101 145.28)"
+          "oklch(15% 0.0045 133.57)",
+          "oklch(26% 0.0098 133.57)",
+          "oklch(37% 0.0135 133.57)",
+          "oklch(48% 0.0150 133.57)",
+          "oklch(60% 0.0150 133.57)",
+          "oklch(72% 0.0135 133.57)",
+          "oklch(84% 0.0098 133.57)",
+          "oklch(95% 0.0038 133.57)"
         ]
       },
-      "focus": {
-        "role": "secondary",
-        "displayName": "키보드 초점",
-        "canonical": "#a77a22",
-        "tonalRamp": [
-          "oklch(15% 0.0380 79.49)",
-          "oklch(26% 0.0659 79.49)",
-          "oklch(37% 0.0938 79.49)",
-          "oklch(48% 0.1141 79.49)",
-          "oklch(60% 0.1141 79.49)",
-          "oklch(72% 0.1141 79.49)",
-          "oklch(84% 0.1141 79.49)",
-          "oklch(95% 0.0380 79.49)"
-        ]
-      },
-      "map-ground": {
+      "button-disabled-bg": {
         "role": "neutral",
-        "displayName": "지도 지면",
-        "canonical": "#e1e9dd",
+        "displayName": "비활성 검색 바탕",
+        "canonical": "#e4e8df",
         "tonalRamp": [
-          "oklch(15% 0.0060 134.92)",
-          "oklch(26% 0.0105 134.92)",
-          "oklch(37% 0.0149 134.92)",
-          "oklch(48% 0.0181 134.92)",
-          "oklch(60% 0.0181 134.92)",
-          "oklch(72% 0.0181 134.92)",
-          "oklch(84% 0.0181 134.92)",
-          "oklch(95% 0.0060 134.92)"
+          "oklch(15% 0.0038 126.38)",
+          "oklch(26% 0.0083 126.38)",
+          "oklch(37% 0.0115 126.38)",
+          "oklch(48% 0.0127 126.38)",
+          "oklch(60% 0.0127 126.38)",
+          "oklch(72% 0.0115 126.38)",
+          "oklch(84% 0.0083 126.38)",
+          "oklch(95% 0.0032 126.38)"
         ]
       },
-      "map-bar": {
+      "button-disabled-text": {
         "role": "neutral",
-        "displayName": "지도 안내 띠",
-        "canonical": "#f7f9f4",
+        "displayName": "비활성 검색 문자",
+        "canonical": "#616b5b",
         "tonalRamp": [
-          "oklch(15% 0.0023 124.45)",
-          "oklch(26% 0.0040 124.45)",
-          "oklch(37% 0.0057 124.45)",
-          "oklch(48% 0.0069 124.45)",
-          "oklch(60% 0.0069 124.45)",
-          "oklch(72% 0.0069 124.45)",
-          "oklch(84% 0.0069 124.45)",
-          "oklch(95% 0.0023 124.45)"
+          "oklch(15% 0.0083 133.66)",
+          "oklch(26% 0.0179 133.66)",
+          "oklch(37% 0.0248 133.66)",
+          "oklch(48% 0.0275 133.66)",
+          "oklch(60% 0.0275 133.66)",
+          "oklch(72% 0.0248 133.66)",
+          "oklch(84% 0.0179 133.66)",
+          "oklch(95% 0.0069 133.66)"
         ]
       }
     },
     "typographyMeta": {
-      "headline": {
+      "display": {
         "displayName": "페이지 제목",
-        "purpose": "검색 화면의 서비스 제목. 별도 브랜드 display 서체가 아니다."
+        "purpose": "페이지 제목"
       },
-      "title": {
-        "displayName": "구역 제목",
-        "purpose": "검색 패널과 결과 제목."
+      "headline": {
+        "displayName": "왼쪽 결과 열의 제목",
+        "purpose": "왼쪽 결과 열의 제목"
       },
-      "body": {
-        "displayName": "본문",
-        "purpose": "입력과 기본 안내."
-      },
-      "button": {
-        "displayName": "행동명",
-        "purpose": "주요·보조 버튼."
+      "map-title": {
+        "displayName": "오른쪽 지도 열의 제목",
+        "purpose": "오른쪽 지도 열의 제목"
       },
       "result-title": {
-        "displayName": "도서관명",
-        "purpose": "결과 행의 도서관 이름."
+        "displayName": "목록 행의 도서관명",
+        "purpose": "목록 행의 도서관명"
       },
-      "label": {
-        "displayName": "필드 레이블",
-        "purpose": "필드 이름과 모드 선택."
+      "body": {
+        "displayName": "본문과 입력값",
+        "purpose": "본문과 입력값"
+      },
+      "button": {
+        "displayName": "주요 검색 행동",
+        "purpose": "주요 검색 행동"
       },
       "detail": {
-        "displayName": "상세 정보",
-        "purpose": "주소·연락처·힌트."
+        "displayName": "주소와 선택 도서관 정보",
+        "purpose": "주소와 선택 도서관 정보"
+      },
+      "label": {
+        "displayName": "라벨·힌트·출처",
+        "purpose": "라벨·힌트·출처"
       },
       "badge": {
-        "displayName": "대출 상태",
-        "purpose": "짧은 상태 문구."
+        "displayName": "대출 상태 문구",
+        "purpose": "대출 상태 문구"
+      },
+      "usage-count": {
+        "displayName": "서비스 전체의 날짜별 호출 수",
+        "purpose": "서비스 전체의 날짜별 호출 수"
       }
     },
     "shadows": [
       {
-        "name": "usage-popover",
-        "value": "0 8px 30px #102d2a26",
-        "purpose": "헤더 설명의 떠 있는 층위."
-      },
-      {
         "name": "map-pin",
-        "value": "0 2px 6px #16362a40",
-        "purpose": "지도 오버레이 핀의 가벼운 깊이."
+        "value": "0 2px 5px #20201e26",
+        "purpose": "지도 위치 표식만 배경에서 분리한다. 일반 작업면·팝오버는 그림자가 없다."
       }
     ],
     "motion": [
       {
         "name": "control-transition",
-        "value": "background-color 160ms ease-out, color 160ms ease-out",
-        "purpose": "버튼 hover 색상."
-      },
-      {
-        "name": "pin-transition",
-        "value": "transform 160ms ease-out",
-        "purpose": "선택 핀 scale(1.12)."
+        "value": "background-color 160ms ease-out",
+        "purpose": "검색 버튼 hover. reduced-motion에서는 제거한다."
       },
       {
         "name": "loading-pending",
         "value": "pending 1.3s ease-in-out infinite alternate",
-        "purpose": "검색 대기 skeleton. reduced-motion에서 제거."
+        "purpose": "82px skeleton의 #e8ece2 → #dbe2d4 배경 전환. reduced-motion에서는 제거한다."
       }
     ],
     "breakpoints": [
+      {
+        "name": "compact-desktop-max",
+        "value": "1190px"
+      },
+      {
+        "name": "two-row-search-max",
+        "value": "980px"
+      },
       {
         "name": "mobile-max",
         "value": "720px"
       },
       {
-        "name": "stack-results-max",
-        "value": "1190px"
-      },
-      {
-        "name": "wide-min",
-        "value": "1600px"
+        "name": "narrow-mobile-max",
+        "value": "360px"
       }
     ]
   },
@@ -463,122 +450,124 @@
       "name": "Primary search button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "조건을 선택한 뒤 실행하는 전체 너비 검색 버튼. disabled 사유는 별도 문구로 제공한다.",
-      "html": "<button class=\"ds-primary\" type=\"button\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"m16 16 4 4\" stroke=\"currentColor\" stroke-width=\"1.8\"/></svg><span>도서관 찾기</span></button>",
-      "css": ".ds-primary{font:650 14px/1.6 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif;border:0;border-radius:6px;padding:10px 16px;cursor:pointer;transition:background-color 160ms ease-out,color 160ms ease-out;display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:48px;background:var(--green,#24624c);color:var(--white,#fff)}.ds-primary:hover{background:var(--green-hover,#164b38)}.ds-primary:focus-visible{outline:3px solid var(--focus,#a77a22);outline-offset:3px}.ds-primary:disabled{cursor:not-allowed;background:#cbd6c9;color:#596b59}@media(prefers-reduced-motion:reduce){.ds-primary,.ds-secondary,.ds-pin{transition:none}}"
+      "description": "Ink-filled final search action; disabled conditions remain explicit.",
+      "html": "<div class=\"ds-sample\"><button class=\"ds-button ds-primary\" type=\"button\">도서관 찾기</button></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample button{font: inherit;}.ds-sample button{-webkit-tap-highlight-color: transparent;}.ds-sample button{cursor: pointer;}.ds-sample button:disabled{cursor: not-allowed;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample .ds-button{min-height: 44px; border: 1px solid var(--ink, #20201e); border-radius: 0; padding: 9px 12px; font-size: 13px; font-weight: 600; transition: background-color 160ms ease-out;}.ds-sample .ds-primary{background: var(--ink, #20201e); color: var(--white, #fff);}.ds-sample .ds-primary:hover{background: #3b4038;}.ds-sample .ds-primary:disabled{border-color: var(--line, #d7dbd1); background: #e4e8df; color: #616b5b;}@media(prefers-reduced-motion:reduce){.ds-sample *{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}"
     },
     {
       "name": "Secondary candidate button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "검색에 앞서 도서 후보를 확인하는 보조 행동.",
-      "html": "<button class=\"ds-secondary\" type=\"button\">후보 조회</button>",
-      "css": ".ds-secondary{font:650 14px/1.6 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif;border:0;border-radius:6px;padding:10px 16px;cursor:pointer;transition:background-color 160ms ease-out,color 160ms ease-out;background:#d0dfd0;color:var(--forest,#183f35)}.ds-secondary:hover{background:#c1d3bf}.ds-secondary:focus-visible{outline:3px solid var(--focus,#a77a22);outline-offset:3px}.ds-secondary:disabled{cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary,.ds-secondary,.ds-pin{transition:none}}"
+      "description": "Bordered candidate lookup next to the book query.",
+      "html": "<div class=\"ds-sample\"><button class=\"ds-button ds-secondary\" type=\"button\">후보 조회</button></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample button{font: inherit;}.ds-sample button{-webkit-tap-highlight-color: transparent;}.ds-sample button{cursor: pointer;}.ds-sample button:disabled{cursor: not-allowed;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample .ds-button{min-height: 44px; border: 1px solid var(--ink, #20201e); border-radius: 0; padding: 9px 12px; font-size: 13px; font-weight: 600; transition: background-color 160ms ease-out;}.ds-sample .ds-secondary{background: var(--white, #fff); color: var(--ink, #20201e); white-space: nowrap; font-size: 12px; padding-inline: 10px;}.ds-sample .ds-secondary:hover{background: var(--soft, #edf0e9);}@media(prefers-reduced-motion:reduce){.ds-sample *{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}"
     },
     {
       "name": "Usage refresh icon button",
       "kind": "button",
       "refersTo": "button-icon",
-      "description": "헤더의 서비스 전체 사용량 새로고침.",
-      "html": "<div class=\"ds-header-sample\"><button class=\"ds-icon\" type=\"button\" aria-label=\"전체 사용량 새로고침\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M20 7v5h-5M4 17v-5h5M6 7a7 7 0 0 1 12-1l2 3M4 15l2 3a7 7 0 0 0 12-1\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button></div>",
-      "css": ".ds-header-sample{display:inline-block;padding:10px;background:var(--forest,#183f35);color:#f6faf2}.ds-icon{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:6px;background:transparent;color:inherit;cursor:pointer}.ds-icon:hover{background:#315a4c}.ds-icon:focus-visible{outline:3px solid var(--focus,#a77a22);outline-offset:3px}.ds-icon:disabled{cursor:not-allowed}"
+      "description": "Quiet refresh action with an accessible name.",
+      "html": "<div class=\"ds-sample\"><button class=\"ds-icon-button\" type=\"button\" aria-label=\"전체 사용량 새로고침\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M20 7v5h-5M4 17v-5h5M6 7a7 7 0 0 1 12-1l2 3M4 15l2 3a7 7 0 0 0 12-1\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample button{font: inherit;}.ds-sample button{-webkit-tap-highlight-color: transparent;}.ds-sample button{cursor: pointer;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample .ds-icon-button{display: grid; place-items: center; width: 30px; height: 32px; margin-top: 15px; color: var(--accent, #52665b); background: transparent; border: 0;}.ds-sample .ds-icon-button:hover{background: var(--soft, #edf0e9);}@media(max-width:720px){.ds-sample .ds-icon-button{margin: 0;}}"
     },
     {
       "name": "Book search field",
       "kind": "input",
       "refersTo": "input-search",
-      "description": "상시 레이블과 힌트가 있는 도서 검색 입력.",
-      "html": "<label class=\"ds-label\" for=\"ds-book\">도서명 또는 저자</label><input class=\"ds-input\" id=\"ds-book\" type=\"search\" placeholder=\"예: 채식주의자, 한강\" aria-describedby=\"ds-book-hint\"><p class=\"ds-hint\" id=\"ds-book-hint\">같은 제목도 판본에 따라 ISBN이 다릅니다.</p>",
-      "css": ".ds-label{display:block;font:650 13px/1.6 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif;color:var(--ink,#20382e);margin-bottom:7px}.ds-input{font:400 15px/1.6 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif;width:100%;min-height:46px;padding:10px 12px;border:1px solid #aebfae;border-radius:6px;background:var(--white,#fff);color:var(--ink,#20382e);caret-color:var(--green,#24624c)}.ds-input::placeholder{color:#65736a}.ds-input:focus-visible{outline:3px solid var(--focus,#a77a22);outline-offset:3px}.ds-input:disabled{background:#f2f5f0;color:#6b776d;border-color:var(--line,#d5dfd4)}.ds-hint{font:400 12px/1.7 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif;color:#53644f;margin:8px 0 0}"
+      "description": "Permanent label, square field and explanatory hint.",
+      "html": "<div class=\"ds-sample\"><label for=\"ds-query\">도서명 또는 저자</label><input id=\"ds-query\" type=\"search\" placeholder=\"예: 채식주의자, 한강\"><p class=\"ds-field-hint\">후보는 한 번에 최대 30개까지 조회합니다.</p></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample p{margin: 0;}.ds-sample input{font: inherit;}.ds-sample input{-webkit-tap-highlight-color: transparent;}.ds-sample input{width: 100%; min-width: 0; min-height: 44px; border: 1px solid var(--field-border, #b7beb2); border-radius: 0; background: var(--white, #fff); color: var(--ink, #20201e); padding: 9px 11px; caret-color: var(--accent, #52665b);}.ds-sample input::placeholder{color: #666f62;}.ds-sample input:disabled{color: #72796d; border-color: var(--line, #d7dbd1); background: #f0f2ec;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample label{display: block; font-size: 12px; color: var(--muted, #5b6258); font-weight: 400; margin-bottom: 7px;}.ds-sample .ds-field-hint{color: var(--muted, #5b6258); font-size: 12px; line-height: 1.7; margin-top: 7px;}@media(max-width:720px){.ds-sample .ds-field-hint{font-size: 12px;}}"
     },
     {
       "name": "Search mode control",
       "kind": "nav",
       "refersTo": "mode-selected",
-      "description": "native radio로 도서명·저자와 ISBN 흐름을 전환한다.",
-      "html": "<fieldset class=\"ds-modes\"><legend class=\"ds-legend\">검색 방식</legend><label class=\"ds-mode\"><input type=\"radio\" name=\"ds-search-mode\" checked><span>도서명·저자</span></label><label class=\"ds-mode\"><input type=\"radio\" name=\"ds-search-mode\"><span>ISBN</span></label></fieldset>",
-      "css": ".ds-modes{display:grid;grid-template-columns:1fr 1fr;gap:4px;border:0;padding:4px;margin:0;background:#cfdccb;border-radius:7px;font:650 13px/1.6 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif;color:var(--ink,#20382e)}.ds-legend{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.ds-mode{position:relative;text-align:center;cursor:pointer}.ds-mode input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0}.ds-mode span{display:block;padding:9px 4px;border-radius:5px}.ds-mode input:checked+span{background:var(--white,#fff);color:var(--forest,#183f35)}.ds-mode input:focus-visible+span{outline:3px solid var(--focus,#a77a22)}"
+      "description": "Radio-backed text tabs with an ink underline.",
+      "html": "<div class=\"ds-sample\"><fieldset class=\"ds-search-mode\"><legend class=\"ds-sr-only\">검색 방식</legend><label><input type=\"radio\" name=\"ds-mode\" checked><span>도서명·저자</span></label><label><input type=\"radio\" name=\"ds-mode\"><span>ISBN</span></label></fieldset></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample input{font: inherit;}.ds-sample input{-webkit-tap-highlight-color: transparent;}.ds-sample input{width: 100%; min-width: 0; min-height: 44px; border: 1px solid var(--field-border, #b7beb2); border-radius: 0; background: var(--white, #fff); color: var(--ink, #20201e); padding: 9px 11px; caret-color: var(--accent, #52665b);}.ds-sample input[type=radio]{width: 14px; min-height: 14px; accent-color: var(--accent, #52665b);}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample .ds-sr-only{position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;}.ds-sample .ds-search-mode{display: flex; gap: 25px; border: 0; padding: 0; margin: 0 0 7px; grid-column: 1/-1;}.ds-sample .ds-search-mode label{position: relative; margin: 0; font-size: 14px; font-weight: 400; cursor: pointer;}.ds-sample .ds-search-mode input{position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0;}.ds-sample .ds-search-mode span{display: block; padding: 3px 0 10px; border-bottom: 2px solid transparent; color: var(--muted, #5b6258);}.ds-sample .ds-search-mode input:checked+span{color: var(--ink, #20201e); border-bottom-color: var(--ink, #20201e);}.ds-sample .ds-search-mode input:focus-visible+span{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample label{display: block; font-size: 12px; color: var(--muted, #5b6258); font-weight: 400; margin-bottom: 7px;}@media(max-width:720px){.ds-sample .ds-search-mode{gap: 23px; margin-bottom: 0;}.ds-sample .ds-search-mode label{font-size: 13px;}}"
     },
     {
       "name": "Availability chips",
       "kind": "chip",
       "refersTo": "status-badge-success",
-      "description": "대출가능·대출중·상태 미확인의 세 의미. 색과 문구를 함께 사용한다.",
-      "html": "<div class=\"ds-statuses\"><span class=\"ds-badge\">대출가능</span><span class=\"ds-badge ds-unavailable\">대출중</span><span class=\"ds-badge ds-unknown\">상태 미확인</span></div>",
-      "css": ".ds-statuses{display:flex;flex-wrap:wrap;gap:8px}.ds-badge{display:inline-block;padding:2px 7px;border-radius:4px;background:var(--success-bg,#e2f1e7);color:#235436;white-space:nowrap;font:650 11px/1.6 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif}.ds-unavailable{background:var(--amber-bg,#fff0d9);color:var(--amber,#865119)}.ds-unknown{background:#e9edeb;color:#536159}"
+      "description": "Loan status remains readable through text as well as color.",
+      "html": "<div class=\"ds-sample\"><span class=\"ds-status-badge\">대출가능</span> <span class=\"ds-status-badge ds-unavailable\">대출중</span> <span class=\"ds-status-badge ds-unknown\">상태 미확인</span></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample .ds-status-badge{display: inline-block; color: var(--success, #355543); background: var(--success-bg, #e9efe9); font-family: var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif); font-size: 12px; line-height: 1.7; font-weight: 400; padding: 1px 6px; white-space: nowrap;}.ds-sample .ds-status-badge.ds-unavailable{color: var(--amber, #795125); background: var(--amber-bg, #f4ede3);}.ds-sample .ds-status-badge.ds-unknown{color: #5d665b; background: #e9ece6;}"
     },
     {
       "name": "Library result row",
       "kind": "card",
       "refersTo": "library-row",
-      "description": "독립 그림자 카드가 아닌 연속 결과 행. 번호 버튼이 지도 선택을 실행한다.",
-      "html": "<article class=\"ds-row\"><div class=\"ds-row-title\"><button class=\"ds-number\" type=\"button\" aria-label=\"1번 서울특별시교육청정독도서관 지도에서 보기\">1</button><div><h3 class=\"ds-library-name\">서울특별시교육청정독도서관</h3><span class=\"ds-row-badge\">대출가능</span></div></div><div class=\"ds-row-details\"><p>서울특별시 종로구 북촌로5길 48</p><a href=\"#ds-homepage\">홈페이지</a><p class=\"ds-code\">도서관 코드 111020</p></div></article>",
-      "css": ".ds-row{padding:19px 20px;background:var(--white,#fff);color:var(--ink,#20382e);border-bottom:1px solid var(--line,#d5dfd4);font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif}.ds-row.ds-selected{background:#f0f6ec}.ds-row-title{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}.ds-number{flex:0 0 27px;width:27px;height:27px;padding:0;border:1px solid #a5b8a4;border-radius:5px;background:var(--white,#fff);color:var(--forest,#183f35);font:700 12px/1.6 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif;cursor:pointer}.ds-number:hover,.ds-selected .ds-number{background:var(--forest,#183f35);color:var(--white,#fff)}.ds-number:focus-visible{outline:3px solid var(--focus,#a77a22);outline-offset:3px}.ds-library-name{margin:0;font-size:14px;font-weight:700;line-height:1.65;overflow-wrap:anywhere}.ds-row-badge{display:inline-block;background:var(--success-bg,#e2f1e7);color:#235436;font-size:11px;font-weight:650;padding:2px 7px;border-radius:4px}.ds-row-details{padding-left:37px;font-size:12px;line-height:1.6;color:var(--muted,#56685f)}.ds-row-details p{margin:4px 0;overflow-wrap:anywhere}.ds-row-details a{display:inline-block;margin-top:6px;color:var(--green,#24624c);font-weight:650;text-underline-offset:4px}.ds-row-details a:hover{text-decoration-thickness:2px}.ds-row-details a:focus-visible{outline:3px solid var(--focus,#a77a22);outline-offset:3px}.ds-code{font-size:11px;font-variant-numeric:tabular-nums;color:#637267}"
+      "description": "Continuous ruled result with a serif name and a stable map number.",
+      "html": "<div class=\"ds-sample\"><article class=\"ds-library-item\"><div class=\"ds-library-title\"><button class=\"ds-location-button\" type=\"button\" aria-label=\"1번 도서관 지도에서 보기\">1</button><div><h3>도서관 이름</h3><span class=\"ds-status-badge\">대출가능</span></div></div><div class=\"ds-library-details\"><p>검색 결과의 도서관 주소</p><div class=\"ds-library-links\"><a href=\"#library-homepage\">홈페이지</a></div><p class=\"ds-library-code\">도서관 코드 000000</p></div></article></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample h3,.ds-sample p{margin: 0;}.ds-sample h3{font-family: var(--serif, Georgia, \"Times New Roman\", serif); font-weight: 500; letter-spacing: -.025em;}.ds-sample button{font: inherit;}.ds-sample button,.ds-sample a{-webkit-tap-highlight-color: transparent;}.ds-sample button{cursor: pointer;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample a{color: var(--accent, #52665b); text-underline-offset: 4px;}.ds-sample a:hover{color: var(--accent-hover, #354a3d); text-decoration-thickness: 2px;}.ds-sample .ds-library-item{padding: 23px 0; border-bottom: 1px solid var(--line, #d7dbd1);}.ds-sample .ds-library-item.ds-selected{background: #f0f3eb;}.ds-sample .ds-library-title{display: flex; align-items: flex-start; gap: 11px; margin-bottom: 10px;}.ds-sample .ds-location-button{flex: 0 0 22px; width: 22px; height: 29px; min-height: 29px; padding: 0; border: 0; background: transparent; color: var(--accent, #52665b); font: 400 15px/1.5 var(--serif, Georgia, \"Times New Roman\", serif);}.ds-sample .ds-location-button:hover,.ds-sample .ds-library-item.ds-selected .ds-location-button{background: var(--soft, #edf0e9); color: var(--ink, #20201e); text-decoration: underline;}.ds-sample .ds-library-title>div{flex: 1; min-width: 0; display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 15px;}.ds-sample .ds-library-title h3{font-size: 22px; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere;}.ds-sample .ds-status-badge{display: inline-block; color: var(--success, #355543); background: var(--success-bg, #e9efe9); font-family: var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif); font-size: 12px; line-height: 1.7; font-weight: 400; padding: 1px 6px; white-space: nowrap;}.ds-sample .ds-status-badge.ds-unavailable{color: var(--amber, #795125); background: var(--amber-bg, #f4ede3);}.ds-sample .ds-status-badge.ds-unknown{color: #5d665b; background: #e9ece6;}.ds-sample .ds-library-details{padding-left: 33px; color: var(--muted, #5b6258); font-size: 13px;}.ds-sample .ds-library-details p{overflow-wrap: anywhere;}.ds-sample .ds-library-links{display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; margin-top: 12px;}.ds-sample .ds-library-links a{font-size: 12px;}.ds-sample .ds-library-code{color: #697264; font-size: 12px; margin-top: 8px; font-variant-numeric: tabular-nums;}@media(max-width:1190px){.ds-sample .ds-library-title h3{font-size: 20px;}}@media(max-width:980px){.ds-sample .ds-library-title>div{display: block;}.ds-sample .ds-library-title .ds-status-badge{margin-top: 7px;}.ds-sample .ds-library-title h3{font-size: 19px;}}@media(max-width:720px){.ds-sample .ds-library-item{padding: 20px 0;}.ds-sample .ds-library-title{gap: 7px;}.ds-sample .ds-library-title>div{display: flex;}.ds-sample .ds-library-title h3{font-size: 20px;}.ds-sample .ds-library-title .ds-status-badge{margin-top: 0;}.ds-sample .ds-library-details{padding-left: 29px; font-size: 12px;}.ds-sample .ds-library-code{font-size: 12px;}}@media(max-width:360px){.ds-sample .ds-library-title>div{display: block;}.ds-sample .ds-library-title .ds-status-badge{margin-top: 7px;}}"
     },
     {
       "name": "Numbered map pin",
       "kind": "custom",
       "refersTo": "map-pin",
-      "description": "목록과 동일 번호. selected 외곽선·확대와 대출 의미의 세 색상을 사용한다.",
-      "html": "<div class=\"ds-pins\"><button class=\"ds-pin ds-selected\" type=\"button\" aria-label=\"1번 도서관 선택\">1</button><button class=\"ds-pin ds-unavailable-pin\" type=\"button\" aria-label=\"2번 도서관 선택\">2</button><button class=\"ds-pin ds-unknown-pin\" type=\"button\" aria-label=\"3번 도서관 선택\">3</button></div>",
-      "css": ".ds-pins{display:flex;gap:16px;padding:12px;background:#e1e9dd}.ds-pin{width:34px;height:34px;min-height:34px;padding:0;border:2px solid white;border-radius:50%;background:var(--green,#24624c);color:white;font:700 13px/1.6 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif;box-shadow:0 2px 6px #16362a40;transition:transform 160ms ease-out;cursor:pointer}.ds-unavailable-pin{background:var(--amber,#865119)}.ds-unknown-pin{background:#64726b}.ds-pin.ds-selected{outline:3px solid var(--forest,#183f35);outline-offset:2px;transform:scale(1.12)}.ds-pin:focus-visible{outline:3px solid var(--focus,#a77a22);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-primary,.ds-secondary,.ds-pin{transition:none}}"
+      "description": "Stable number with a library-name label on hover or keyboard focus.",
+      "html": "<div class=\"ds-sample\"><div style=\"padding-top:44px;padding-left:60px\"><button class=\"ds-map-pin\" type=\"button\" aria-label=\"1번 도서관 이름과 홈페이지 보기\">1<span class=\"ds-map-pin-label\">도서관 이름</span></button></div></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample button{font: inherit;}.ds-sample button{-webkit-tap-highlight-color: transparent;}.ds-sample button{cursor: pointer;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample .ds-map-pin{position: relative; display: grid; place-items: center; width: 32px; height: 32px; min-height: 32px; padding: 0; border: 2px solid var(--white, #fff); border-radius: 50%; background: var(--accent, #52665b); color: var(--white, #fff); font-family: var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif); font-size: 12px; font-weight: 600; box-shadow: 0 2px 5px #20201e26;}.ds-sample .ds-map-pin.ds-unavailable{background: var(--amber, #795125);}.ds-sample .ds-map-pin.ds-unknown{background: #677168;}.ds-sample .ds-map-pin.ds-selected{outline: 2px solid var(--ink, #20201e); outline-offset: 2px;}.ds-sample .ds-map-pin-label{display: none; position: absolute; bottom: 39px; left: 50%; transform: translateX(-50%); width: max-content; max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: var(--white, #fff); color: var(--ink, #20201e); border: 1px solid var(--field-border, #b7beb2); padding: 5px 8px; font-size: 12px; font-weight: 400; pointer-events: none;}.ds-sample .ds-map-pin:hover .ds-map-pin-label,.ds-sample .ds-map-pin:focus-visible .ds-map-pin-label{display: block;}"
     },
     {
-      "name": "Selected library context",
+      "name": "Native map information content",
       "kind": "custom",
-      "refersTo": "map-selection",
-      "description": "모바일 목록 번호 선택 시 초점을 받는 보이는 region. 예시는 지도 없이도 선택 맥락을 표시한다.",
-      "html": "<section class=\"ds-selection\" tabindex=\"-1\" role=\"region\" aria-label=\"선택한 도서관: 서울특별시교육청정독도서관\"><a class=\"ds-selection-link\" href=\"#ds-homepage\">1. 서울특별시교육청정독도서관</a><p>서울특별시 종로구 북촌로5길 48</p></section>",
-      "css": ".ds-selection{background:var(--forest,#183f35);padding:15px 18px;color:var(--white,#fff);font:400 13px/1.6 -apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif}.ds-selection:focus{outline:3px solid #dce9b9;outline-offset:-5px}.ds-selection-link{color:#e1eccd;text-underline-offset:4px}.ds-selection-link:hover{text-decoration-thickness:2px}.ds-selection-link:focus-visible{outline:3px solid var(--focus,#a77a22);outline-offset:3px}.ds-selection p{color:#d4e3d6;font-size:12px;margin:4px 0 0}"
+      "refersTo": "map-info",
+      "description": "App-owned content inside Kakao InfoWindow; the provider owns its outer shell.",
+      "html": "<div class=\"ds-sample\"><section class=\"ds-map-info\" aria-label=\"도서관 정보\"><div class=\"ds-map-info-header\"><a class=\"ds-map-info-name\" href=\"#library-homepage\">도서관 이름</a><button class=\"ds-map-info-close\" type=\"button\" aria-label=\"도서관 정보 닫기\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"none\" aria-hidden=\"true\"><path d=\"m5 5 10 10M15 5 5 15\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></button></div><span class=\"ds-status-badge\">대출가능</span><p>검색 결과의 도서관 주소</p></section></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample p{margin: 0;}.ds-sample button{font: inherit;}.ds-sample button,.ds-sample a{-webkit-tap-highlight-color: transparent;}.ds-sample button{cursor: pointer;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample a{color: var(--accent, #52665b); text-underline-offset: 4px;}.ds-sample a:hover{color: var(--accent-hover, #354a3d); text-decoration-thickness: 2px;}.ds-sample .ds-map-info{width: 250px; padding: 14px; white-space: normal; color: var(--ink, #20201e); font: 13px/1.6 var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);}.ds-sample .ds-map-info-header{display: flex; align-items: flex-start; gap: 9px;}.ds-sample .ds-map-info-name{flex: 1; min-width: 0; font: 500 18px/1.5 var(--serif, Georgia, \"Times New Roman\", serif); overflow-wrap: anywhere;}.ds-sample .ds-map-info-close{display: grid; place-items: center; width: 25px; height: 25px; padding: 0; flex-shrink: 0; background: transparent; border: 0; color: var(--muted, #5b6258);}.ds-sample .ds-map-info-close:hover{background: var(--soft, #edf0e9);}.ds-sample .ds-map-info p{font-size: 12px; color: var(--muted, #5b6258); margin-top: 9px;}.ds-sample .ds-map-info .ds-status-badge{margin-top: 9px;}.ds-sample .ds-status-badge{display: inline-block; color: var(--success, #355543); background: var(--success-bg, #e9efe9); font-family: var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif); font-size: 12px; line-height: 1.7; font-weight: 400; padding: 1px 6px; white-space: nowrap;}.ds-sample .ds-status-badge.ds-unavailable{color: var(--amber, #795125); background: var(--amber-bg, #f4ede3);}.ds-sample .ds-status-badge.ds-unknown{color: #5d665b; background: #e9ece6;}@media(max-width:980px){.ds-sample .ds-map-info{width: 230px;}}@media(max-width:720px){.ds-sample .ds-map-info{width: 230px;}.ds-sample .ds-map-info-name{font-size: 17px;}}"
     },
     {
       "name": "Usage disclosure",
       "kind": "custom",
-      "description": "전체 일일 호출 수와 확인 상태. native details로 집계 범위를 설명한다.",
-      "html": "<div class=\"ds-usage-header\"><details class=\"ds-usage\"><summary><span>오늘 전체 사용량</span><strong>집계 확인 불가</strong><span class=\"ds-info\" aria-hidden=\"true\">i</span></summary><div class=\"ds-usage-help\"><strong>모든 이용자의 호출 합계</strong><p>이 사이트의 정보나루 API 호출을 합산합니다. 집계 연결을 확인하지 못했습니다. 새로고침 버튼으로 다시 확인해 주세요.</p></div></details></div>",
-      "css": ".ds-usage-header{padding:16px;background:var(--forest,#183f35);color:#f6faf2;font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",\"Malgun Gothic\",sans-serif;min-height:76px}.ds-usage{position:relative;font-size:13px}.ds-usage summary{list-style:none;display:flex;align-items:center;gap:12px;cursor:pointer}.ds-usage summary::-webkit-details-marker{display:none}.ds-usage summary:focus-visible{outline:3px solid var(--focus,#a77a22);outline-offset:3px}.ds-usage summary>span:first-child{color:#d6e4d8}.ds-usage strong{font-size:16px;font-weight:650;font-variant-numeric:tabular-nums}.ds-info{display:inline-flex;width:17px;height:17px;align-items:center;justify-content:center;border:1px solid #a9c3b1;border-radius:50%;font-size:11px}.ds-usage-help{position:absolute;right:0;top:37px;z-index:1;width:330px;max-width:calc(100vw - 36px);padding:20px;background:var(--white,#fff);color:var(--ink,#20382e);box-shadow:0 8px 30px #102d2a26;border-radius:8px}.ds-usage-help strong{font-size:14px}.ds-usage-help p{font-size:13px;line-height:1.6;margin:8px 0 0;color:var(--muted,#56685f)}"
+      "refersTo": "usage-help",
+      "description": "Shared daily usage count with a flat explanatory disclosure.",
+      "html": "<div class=\"ds-sample\"><details class=\"ds-usage-details\"><summary><span>오늘 전체 사용량</span><strong>확인 중</strong><span class=\"ds-info-mark\" aria-hidden=\"true\">i</span></summary><div class=\"ds-usage-help\"><strong>모든 이용자의 호출 합계</strong><p>이 사이트의 정보나루 API 호출을 합산합니다. 매일 한국시간 00:00에 날짜가 바뀝니다.</p></div></details></div>",
+      "css": ".ds-sample{font-family:var(--sans, \"Inter\", \"Noto Sans KR\", system-ui, sans-serif);font-size:14px;line-height:1.65;color:var(--ink, #20201e);position:relative;}.ds-sample p{margin: 0;}.ds-sample :focus-visible{outline: 2px solid var(--accent, #52665b); outline-offset: 4px;}.ds-sample .ds-usage-details{position: relative; font-size: 12px; text-align: right;}.ds-sample .ds-usage-details summary{list-style: none; cursor: pointer;}.ds-sample .ds-usage-details summary::-webkit-details-marker{display: none;}.ds-sample .ds-usage-details summary>span:first-child{display: block; color: var(--muted, #5b6258);}.ds-sample .ds-usage-details summary>strong{display: inline-block; font: 400 22px/1.7 var(--serif, Georgia, \"Times New Roman\", serif); font-variant-numeric: tabular-nums; white-space: nowrap;}.ds-sample .ds-info-mark{display: inline-flex; width: 15px; height: 15px; margin-left: 6px; border: 1px solid var(--field-border, #b7beb2); border-radius: 50%; align-items: center; justify-content: center; color: var(--muted, #5b6258); font-size: 11px;}.ds-sample .ds-usage-help{position: absolute; right: -28px; top: 65px; width: 330px; padding: 20px; z-index: 1200; background: var(--white, #fff); color: var(--ink, #20201e); text-align: left; border: 1px solid var(--field-border, #b7beb2);}.ds-sample .ds-usage-help strong{font-size: 14px;}.ds-sample .ds-usage-help p{font-size: 13px; margin-top: 8px; color: var(--muted, #5b6258);}@media(max-width:720px){.ds-sample .ds-usage-details{text-align: left;}.ds-sample .ds-usage-details summary{display: flex; align-items: baseline; gap: 9px;}.ds-sample .ds-usage-details summary>strong{font-size: 18px;}.ds-sample .ds-info-mark{margin-left: 0;}.ds-sample .ds-usage-help{left: 0; right: auto; top: 38px; width: min(330px,calc(100vw - 44px));}}"
     }
   ],
   "narrative": {
-    "northStar": "현장 도감의 색인",
-    "overview": "짙은 숲색 표지와 밝은 회녹색 작업면 위에서 한 권의 책을 찾고, 방문할 도서관을 비교한다. 흰 결과면과 담백한 UI 글자가 정보를 나누며, 목록과 지도에 반복되는 실제 식별 번호가 이 화면의 시그니처다. 도감은 재료와 색인의 비유이며, 장식용 종이나 식물 삽화로 구현하지 않는다.\n\n검색과 비교에 집중하는 Operate 화면이다. 브랜드명 Find Library와 한국어 서비스명을 유지하며, 입력 상태·대출 상태·연결 실패가 각자의 문구로 드러난다. 기관 소속이나 실시간 대출 보장처럼 확인되지 않은 주장을 시각적 신뢰 장치로 추가하지 않는다.\n",
+    "northStar": "책의 본문",
+    "overview": "밝은 지면 위에 검은 활자, 가는 구분선, 절제된 회녹색을 놓는다. 세리프 제목과 산세리프 본문이 책의 본문 같은 건조한 인상을 만들며, 여백과 활자의 크기로 정보의 순서를 드러낸다. 종이 질감이나 책 장식을 덧붙여 분위기를 설명하지 않는다.\n\nFind Library / 대출가능 도서관 검색의 이름을 유지한다. 한 권의 책을 고르고 지역의 도서관을 비교하는 도구답게 입력·대출 상태·지도 선택을 명확히 보여준다. 확인되지 않은 기관 소속이나 실시간 대출 보장을 시각적 신뢰 장치로 추가하지 않는다.",
     "keyCharacteristics": [
-      "숲색 헤더와 주요 행동, 회녹색 작업 바탕, 흰 결과면의 명확한 층위.",
-      "한 가지 sans UI 계열과 절제된 크기 차이로 구성하는 검색 중심 정보 계층.",
-      "동일 번호로 연결하는 목록 행과 지도 핀, 선택된 도서관의 명시적 맥락.",
-      "대출가능·대출중·상태 미확인을 색과 문구로 함께 구별하는 상태 체계.",
-      "모바일에서 검색 뒤 결과를 읽고 목록과 지도를 전환하는 단일 열 흐름."
+      "밝은 지면과 잉크색 주요 행동, 회녹색 링크·초점의 절제된 대비.",
+      "Georgia 계열 제목과 Inter / Noto Sans KR 계열 본문의 역할 분리.",
+      "직각 필드와 얇은 구분선, 그림자 없는 기본 작업면.",
+      "목록과 지도의 동일 번호, 이름을 직접 확인할 수 있는 지도 핀.",
+      "대출 상태·요청 실패·집계 실패를 문구로 구별하는 정보 표현."
     ],
     "rules": [
       {
         "name": "The Status Has Words Rule",
-        "body": "대출 상태는 색만으로 전달하지 않는다. 대출가능·대출중·상태 미확인 문구를 유지하고, 연결 실패를 결과 없음이나 사용량 0으로 바꾸지 않는다.",
+        "body": "대출가능·대출중·상태 미확인을 색과 문구로 함께 표시한다. 요청 실패를 결과 없음으로, 집계 실패를 0회로 바꾸지 않는다.",
         "section": "colors"
       },
       {
-        "name": "The Stable Number Rule",
-        "body": "사용량·결과 수·도서관 코드는 tabular-nums를 사용한다. 실제 목록 번호는 필터 전 결과에 부여한 번호를 유지하며, 지도와 목록 사이에서 의미가 바뀌지 않는다.",
+        "name": "The Two Voices Rule",
+        "body": "제목과 도서관 이름은 세리프, 입력·설명·상태는 산세리프를 사용한다. 한글이 사용 환경의 지원 서체로 표시되는 것은 현재 폰트 스택의 의도된 동작이다.",
         "section": "typography"
       },
       {
-        "name": "The Flat Work Surface Rule",
-        "body": "기본 패널·검색 결과·버튼에 일반 카드 그림자를 더하지 않는다. 떠 있는 설명과 지도 오버레이의 기존 그림자만 깊이 신호로 사용한다.",
+        "name": "The Flat Page Rule",
+        "body": "검색·목록·버튼은 평평하게 유지한다. 지도 핀의 작은 그림자 외에 장식용 카드 그림자를 추가하지 않는다.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "**Do** 숲색 행동과 회녹색 작업면, 흰 결과면의 역할을 유지한다.",
-      "**Do** 같은 도서관의 목록과 지도에 같은 번호를 사용한다.",
-      "**Do** 대출가능·대출중·상태 미확인을 문구와 색으로 함께 표시한다.",
-      "**Do** 모바일에서 숨긴 목록을 벗어난 초점을 보이는 선택 도서관 맥락으로 옮긴다.",
-      "**Do** 화면 크기에 따른 목록·지도 구조와 reduced-motion 동작을 함께 유지한다."
+      "Do 세리프 제목과 산세리프 본문의 역할을 유지하고 한글 시스템 폴백을 존중한다.",
+      "Do 주요 검색은 잉크색, 링크·초점·대출가능 핀은 회녹색으로 구분한다.",
+      "Do 검색과 결과를 가는 구분선으로 나누고 직각 필드와 연속 목록 행을 유지한다.",
+      "Do 목록과 지도에 같은 번호를 쓰고 지도 높이를 목록 길이와 독립적으로 유지한다.",
+      "Do 모바일 지도 전환 뒤 지도 크기와 선택 도서관의 가시성을 다시 맞춘다.",
+      "Do 실제 홈페이지 URL이 있을 때 도서관 이름을 링크로 표시하고 실패·미확인 상태를 문구로 남긴다."
     ],
     "donts": [
-      "**Don't** 집계 연결 실패를 사용량 0으로, 요청 실패를 빈 결과로 바꾸지 않는다.",
-      "**Don't** 필터를 바꿀 때 남은 도서관 번호를 다시 매겨 지도와의 연결을 끊지 않는다.",
-      "**Don't** 평평한 결과 행에 일반 카드 그림자나 불필요한 장식 레이어를 더하지 않는다.",
-      "**Don't** 확인되지 않은 기관 소속·실시간 상태 보장·성공 검증 주장을 추가하지 않는다.",
-      "**Don't** 방향 계약의 초기 수치를 근거로 구현의 패널·컨트롤 모서리를 임의 통일하지 않는다."
+      "Don't 숲색 헤더, 둥근 tonal 검색 패널, 단일 산세리프 제목으로 이전 시각 체계를 되살리지 않는다.",
+      "Don't 종이 질감, 가짜 책 장식, 장식용 그림자나 분리된 카드 그리드를 추가하지 않는다.",
+      "Don't 지도 높이를 긴 결과 목록에 맞춰 늘리거나 모바일에서 두 결과 보기를 동시에 강제하지 않는다.",
+      "Don't 대출 상태를 색만으로 전달하거나 오류·미확인 집계를 0으로 표시하지 않는다.",
+      "Don't 확인되지 않은 기관 로고·소속·실시간성 보장이나 존재하지 않는 홈페이지 링크를 추가하지 않는다."
     ]
   }
 }

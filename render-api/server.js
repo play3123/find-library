@@ -12,6 +12,7 @@ const usageCounter = createUsageCounter();
 const LIBCFG = {
   API_BASE: "https://www.data4library.kr/api",
   NLK_SEARCH_API: "https://www.nl.go.kr/NL/search/openApi/search.do",
+  BOOK_CANDIDATE_LIMIT: 30,
   PAGE_SIZE: 100,
   BOOK_EXIST_BATCH_SIZE: 20,
   BOOK_EXIST_CACHE_TTL_SEC: 21600,
@@ -81,7 +82,7 @@ app.post("/api/books/candidates", async (req, res) => {
     const query = String(req.body && req.body.query || "").trim();
     if (!query) return res.status(400).json({ error: "query is required" });
 
-    const books = await searchNlkBooks(query, 30);
+    const books = await searchNlkBooks(query, LIBCFG.BOOK_CANDIDATE_LIMIT);
     const rows = books
       .map((b) => ({
         isbn13: b.isbn13 || isbn13FromAny(b.isbn || ""),
@@ -92,7 +93,7 @@ app.post("/api/books/candidates", async (req, res) => {
       }))
       .filter((b) => b.bookname || b.isbn13);
 
-    sendJson(res, { rows });
+    sendJson(res, { rows, limit: LIBCFG.BOOK_CANDIDATE_LIMIT });
   } catch (error) {
     sendError(res, error);
   }

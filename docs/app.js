@@ -5,7 +5,8 @@
   const state = { books: [], regions: [], districts: [], rows: [], candidateQuery: "", busy: false,
     finding: false, districtRequest: 0, usage: null, selected: null, mapSequence: 0 };
   const base = String(window.APP_CONFIG && window.APP_CONFIG.API_BASE || "").replace(/\/$/, "");
-  let map, geocoder, overlays = [], points = new Map(), addressCache = new Map(), midnightTimer;
+  let map, geocoder, mapInfo, mapResizeObserver, mapLayoutFrame, fitAfterLayout = false, revealAfterLayout = false, infoOpen = false,
+    overlays = [], points = new Map(), addressCache = new Map(), midnightTimer;
   const fmt = new Intl.NumberFormat("ko-KR");
   function node(tag, className, text) {
     const el = document.createElement(tag);
@@ -67,7 +68,7 @@
   function updateBook() {
     const book = chosen(state.books, "bookSelect");
     $("selectedBook").replaceChildren(); $("selectedBook").hidden = !book || mode() === "isbn";
-    if (book) $("selectedBook").append(node("strong", "", book.bookname), node("small", "", `${book.authors || "저자 정보 없음"} · ISBN ${book.isbn13 || "정보 없음"}`));
+    if (book) $("selectedBook").append(node("strong", "", book.bookname), node("small", "", `${[book.authors, book.publisher, book.publication_year].filter(Boolean).join(" · ")} · ISBN ${book.isbn13 || "정보 없음"}`));
   }
   function readiness() {
     const region = chosen(state.regions, "region"), district = chosen(state.districts, "dtl");
@@ -75,7 +76,7 @@
     if (mode() === "keyword") {
       const book = chosen(state.books, "bookSelect");
       if (!book) reason = "도서 후보를 조회하고 한 권을 선택해 주세요.";
-      else if (!book.isbn13) reason = "ISBN이 있는 다른 판본을 선택해 주세요.";
+      else if (!book.isbn13) reason = "이 책의 ISBN 정보가 없습니다. ISBN으로 검색하거나 다른 책을 선택해 주세요.";
     } else if (!/^(?:\d{13}|\d{9}[\dXx])$/.test($("isbnInput").value.replace(/[\s-]/g, ""))) reason = "10자리 또는 13자리 ISBN을 입력해 주세요.";
     if (!reason && !region) reason = "시·도를 선택해 주세요.";
     if (!reason && region.code !== "11" && !district) reason = "시·군·구를 선택해 주세요.";
@@ -86,6 +87,7 @@
   }
   function switchMode() {
     const isbn = mode() === "isbn";
+    $("searchForm").dataset.mode = isbn ? "isbn" : "keyword";
     $("keywordFlow").hidden = isbn; $("isbnFlow").hidden = !isbn;
     $("keywordInput").disabled = isbn; $("isbnInput").disabled = !isbn;
     updateBook(); message(); readiness();
@@ -100,9 +102,10 @@
       const data = await request("/api/books/candidates", { query });
       if (query !== $("keywordInput").value.trim() || mode() !== "keyword") return;
       state.books = data.rows || []; state.candidateQuery = query;
-      options($("bookSelect"), state.books, state.books.length ? "빌릴 책의 판본을 선택하세요" : "조회된 후보가 없습니다", (b) => `${b.bookname} · ${b.publication_year || "발행연도 없음"} · ${b.isbn13 || "ISBN 없음"}`);
+      options($("bookSelect"), state.books, state.books.length ? "빌릴 책을 선택하세요" : "조회된 후보가 없습니다", (b) => `${b.bookname} · ${b.publication_year || "발행연도 없음"} · ${b.isbn13 || "ISBN 없음"}`);
       $("bookSelect").disabled = !state.books.length;
-      $("candidateHint").textContent = state.books.length ? `${state.books.length}개 후보 중 한 권을 선택해 주세요.` : "다른 도서명이나 저자로 다시 조회해 주세요.";
+      const limit = Number.isSafeInteger(data.limit) ? data.limit : 30;
+      $("candidateHint").textContent = state.books.length ? `${state.books.length}개 후보 · 최대 ${limit}개 조회` : "다른 도서명이나 저자로 다시 조회해 주세요.";
     } catch (error) { message(error.message); options($("bookSelect"), [], "다시 조회해 주세요", () => ""); }
     finally { state.finding = false; $("findBtn").textContent = "후보 조회"; readiness(); }
   }
@@ -133,9 +136,11 @@
     const region = chosen(state.regions, "region"), district = chosen(state.districts, "dtl");
     const target = mode() === "keyword" ? { ...chosen(state.books, "bookSelect") } : { isbn13: $("isbnInput").value.trim(), bookname: "" };
     state.rows = []; $("availableOnly").checked = false; state.selected = null; message();
+    setView("list");
     $("libraryList").replaceChildren(); $("emptyState").hidden = true; $("resultMessage").hidden = true;
-    $("resultToolbar").hidden = true; $("resultCount").hidden = true; clearMap(); busy(true);
+    $("resultToolbar").hidden = true; $("availableFilter").hidden = true; $("resultControls").hidden = true; $("resultCount").hidden = true; clearMap(); busy(true);
     $("resultsHeading").textContent = "소장 도서관을 확인하고 있어요";
+    $("resultsSummary").textContent = `${region.name} ${district ? district.name : "전체"} · 소장 정보와 대출 상태를 조회하고 있습니다.`;
     try {
       if (mode() === "isbn") {
         const resolved = await request("/api/books/resolve-isbn", { queryOrIsbn: target.isbn13 });
@@ -145,9 +150,10 @@
       const data = await request("/api/search", { isbn13: target.isbn13, query: target.bookname,
         regionCode: region.code, regionName: region.name, dtlCode: district ? district.code : "", dtlName: district ? district.name : "" });
       state.rows = (data.rows || []).map((r, i) => ({ ...r, number: i + 1 }));
-      $("resultsHeading").textContent = target.bookname || `ISBN ${target.isbn13}`;
-      $("resultsSummary").textContent = `${region.name} ${district ? district.name : "전체"} · 소장 도서관 ${data.count}곳`;
-      $("resultToolbar").hidden = false; renderResults();
+      $("resultsHeading").textContent = "찾은 도서관";
+      $("resultsSummary").textContent = `${region.name} ${district ? district.name : "전체"} · ${target.bookname || `ISBN ${target.isbn13}`}`;
+      $("mapRegion").textContent = `${region.name} ${district ? district.name : "전체"}`;
+      $("resultToolbar").hidden = false; $("availableFilter").hidden = false; $("resultControls").hidden = false; renderResults();
       if (window.matchMedia("(max-width:720px)").matches) { $("results").scrollIntoView({ block: "start", behavior: "instant" }); $("results").focus({ preventScroll: true }); }
     } catch (error) {
       $("resultsHeading").textContent = "검색을 완료하지 못했어요";
@@ -162,7 +168,7 @@
     const rows = visibleRows(); $("libraryList").replaceChildren(); $("resultCount").hidden = false;
     $("resultCount").textContent = `${rows.length}곳`;
     $("resultMessage").hidden = !!rows.length;
-    $("resultMessage").textContent = state.rows.length ? "대출가능으로 확인된 도서관이 없습니다. 필터를 해제해 전체 결과를 확인하세요." : "이 지역에서 소장 도서관을 찾지 못했습니다. 다른 지역이나 판본으로 검색해 주세요.";
+    $("resultMessage").textContent = state.rows.length ? "대출가능으로 확인된 도서관이 없습니다. 필터를 해제해 전체 결과를 확인하세요." : "이 지역에서 소장 도서관을 찾지 못했습니다. 다른 지역이나 책으로 검색해 주세요.";
     rows.forEach((row) => {
       const li = node("li", "library-item"); li.dataset.number = row.number;
       const title = node("div", "library-title"), button = node("button", "location-button", row.number);
@@ -181,15 +187,20 @@
   function setView(view) {
     $("resultLayout").dataset.view = view;
     ["list", "map"].forEach((name) => { $(name + "View").classList.toggle("active", view === name); $(name + "View").setAttribute("aria-pressed", String(view === name)); });
-    if (view === "map" && map) { map.relayout(); const p = points.get(state.selected); if (p) map.setCenter(p); else fitMap(); }
+    if (mapInfo) mapInfo.close(); infoOpen = false;
+    if (view === "map") layoutMap(!state.selected, true);
   }
-  function selectLibrary(number, openMap) {
+  function selectLibrary(number, openMap, focusInfo = false) {
     state.selected = number;
     if (openMap) setView("map");
     document.querySelectorAll(".library-item,.map-pin").forEach((el) => el.classList.toggle("selected", Number(el.dataset.number) === number));
     const row = state.rows.find((r) => r.number === number), point = points.get(number);
     if (!row) return;
-    if (point && map) { map.setLevel(4); map.panTo(point); }
+    if (point && map) {
+      fitAfterLayout = false;
+      map.relayout(); map.setLevel(4); map.setCenter(point);
+      showMapInfo(row, point, focusInfo);
+    }
     else $("mapStatus").textContent = "이 도서관의 좌표를 아직 확인하지 못했습니다. 주소와 홈페이지를 참고해 주세요.";
     const box = $("mapSelection"); box.hidden = false; box.replaceChildren();
     const url = safeUrl(row.homepage); box.append(url ? link(`${number}. ${row.libName}`, url) : node("strong", "", `${number}. ${row.libName}`), node("p", "", row.address));
@@ -201,13 +212,50 @@
       box.scrollIntoView({ block: "nearest", behavior: "instant" });
     }
   }
-  function clearMap() { state.mapSequence += 1; overlays.forEach((o) => o.setMap(null)); overlays = []; points.clear(); $("mapSelection").hidden = true; }
+  function showMapInfo(row, point, focusInfo) {
+    if (!mapInfo) return;
+    const content = node("div", "map-info"), header = node("div", "map-info-header");
+    content.setAttribute("role", "region"); content.setAttribute("aria-label", `${row.libName} 도서관 정보`);
+    const url = safeUrl(row.homepage), name = url ? link(row.libName, url) : node("strong", "", row.libName);
+    name.className = "map-info-name";
+    if (url) name.setAttribute("aria-label", `${row.libName} 홈페이지 새 창에서 열기`);
+    const close = node("button", "map-info-close"); close.type = "button"; close.setAttribute("aria-label", "도서관 정보 닫기");
+    close.innerHTML = '<svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5"/></svg>';
+    const dismiss = () => { mapInfo.close(); infoOpen = false; document.querySelector(`.map-pin[data-number="${row.number}"]`)?.focus({ preventScroll: true }); };
+    close.onclick = dismiss;
+    content.onkeydown = (event) => { if (event.key === "Escape") { event.preventDefault(); dismiss(); } };
+    const [label, status] = availability(row);
+    header.append(name, close); content.append(header, node("span", `status-badge ${status}`, label), node("p", "", row.address || "주소 정보 없음"));
+    if (!url) content.append(node("p", "", "등록된 홈페이지가 없습니다."));
+    mapInfo.close(); mapInfo.setPosition(point); mapInfo.setContent(content); infoOpen = true; mapInfo.open(map);
+    if (focusInfo) (url ? name : close).focus({ preventScroll: true });
+  }
+  function layoutMap(fit = false, reveal = false) {
+    fitAfterLayout = fitAfterLayout || fit;
+    revealAfterLayout = revealAfterLayout || reveal;
+    cancelAnimationFrame(mapLayoutFrame);
+    mapLayoutFrame = requestAnimationFrame(() => {
+      const size = $("map").getBoundingClientRect();
+      if (!map || !size.width || !size.height) return;
+      const shouldFit = fitAfterLayout, shouldReveal = revealAfterLayout; fitAfterLayout = false; revealAfterLayout = false;
+      const center = map.getCenter(); map.relayout(); map.setCenter(center);
+      if (shouldFit) fitMap();
+      else if (shouldReveal && !infoOpen && points.has(state.selected)) map.setCenter(points.get(state.selected));
+      if (infoOpen) mapInfo.open(map);
+    });
+  }
+  function clearMap() { state.mapSequence += 1; if (mapInfo) mapInfo.close(); infoOpen = false; fitAfterLayout = false; revealAfterLayout = false; cancelAnimationFrame(mapLayoutFrame); overlays.forEach((o) => o.setMap(null)); overlays = []; points.clear(); $("mapSelection").hidden = true; }
   function fitMap() { if (!map || !points.size) return; const bounds = new kakao.maps.LatLngBounds(); points.forEach((p) => bounds.extend(p)); map.setBounds(bounds); }
   function coordinates(address) {
     if (addressCache.has(address)) return Promise.resolve(addressCache.get(address));
     return new Promise((resolve) => {
       if (!address || !geocoder) return resolve(null);
-      geocoder.addressSearch(address, (rows, status) => { const value = status === kakao.maps.services.Status.OK && rows.length ? new kakao.maps.LatLng(Number(rows[0].y), Number(rows[0].x)) : null; if (value) addressCache.set(address, value); resolve(value); });
+      const locate = (attempt = 0) => geocoder.addressSearch(address, (rows, status) => {
+        if (status === kakao.maps.services.Status.ERROR && attempt === 0) { setTimeout(() => locate(1), 350); return; }
+        const value = status === kakao.maps.services.Status.OK && rows.length ? new kakao.maps.LatLng(Number(rows[0].y), Number(rows[0].x)) : null;
+        if (value) addressCache.set(address, value); resolve(value);
+      });
+      locate();
     });
   }
   async function renderMap(rows) {
@@ -215,16 +263,26 @@
     const seq = state.mapSequence;
     if (!rows.length) { $("mapStatus").textContent = "검색 결과가 있으면 지도에 위치를 표시합니다."; return; }
     $("mapStatus").textContent = "도서관 주소의 위치를 확인하고 있습니다.";
-    const located = await Promise.all(rows.map(async (row) => ({ row, point: await coordinates(row.address) })));
+    const located = new Array(rows.length); let cursor = 0;
+    await Promise.all(Array.from({ length: Math.min(4, rows.length) }, async () => {
+      while (cursor < rows.length && seq === state.mapSequence) {
+        const index = cursor++, row = rows[index]; located[index] = { row, point: await coordinates(row.address) };
+      }
+    }));
     if (seq !== state.mapSequence) return;
     located.forEach(({ row, point }) => {
       if (!point) return;
       points.set(row.number, point);
       const button = node("button", `map-pin ${availability(row)[1]}`, row.number); button.type = "button"; button.dataset.number = row.number;
-      button.setAttribute("aria-label", `${row.number}번 ${row.libName} 선택`); button.onclick = () => selectLibrary(row.number, false);
-      overlays.push(new kakao.maps.CustomOverlay({ map, position: point, content: button, yAnchor: 1.2 }));
+      button.append(node("span", "map-pin-label", row.libName));
+      button.setAttribute("aria-label", `${row.number}번 ${row.libName} 이름과 홈페이지 보기`);
+      button.onclick = (event) => selectLibrary(row.number, false, event.detail === 0);
+      const overlay = new kakao.maps.CustomOverlay({ map, position: point, content: button, clickable: true, yAnchor: 1.2, zIndex: 10 });
+      button.onmouseenter = button.onfocus = () => overlay.setZIndex(200);
+      button.onmouseleave = button.onblur = () => overlay.setZIndex(10);
+      overlays.push(overlay);
     });
-    fitMap(); $("mapStatus").textContent = `${rows.length}곳 중 ${points.size}곳의 위치를 표시했습니다.${points.size < rows.length ? " 일부 주소는 좌표를 확인하지 못했습니다." : ""}`;
+    layoutMap(true); $("mapStatus").textContent = `${rows.length}곳 중 ${points.size}곳의 위치를 표시했습니다.${points.size < rows.length ? " 일부 주소는 좌표를 확인하지 못했습니다." : ""} 핀을 눌러 이름과 홈페이지를 확인하세요.`;
   }
   async function initMap() {
     try {
@@ -238,7 +296,9 @@
         kakao.maps.load(() => {
           $("map").replaceChildren();
           map = new kakao.maps.Map($("map"), { center: new kakao.maps.LatLng(37.5665, 126.978), level: 7 });
-          geocoder = new kakao.maps.services.Geocoder(); $("mapStatus").textContent = "목록 번호를 누르면 해당 도서관으로 이동합니다.";
+          mapInfo = new kakao.maps.InfoWindow({ zIndex: 1000, disableAutoPan: false });
+          mapResizeObserver = new ResizeObserver(() => layoutMap()); mapResizeObserver.observe($("map"));
+          geocoder = new kakao.maps.services.Geocoder(); $("mapStatus").textContent = "지도 핀에서 도서관 이름과 홈페이지를 확인할 수 있습니다.";
           renderMap(visibleRows());
         });
       }; document.head.append(script);
@@ -247,11 +307,11 @@
   async function init() {
     $("searchForm").onsubmit = search; $("findBtn").onclick = candidates;
     document.querySelectorAll('[name="searchMode"]').forEach((el) => el.addEventListener("change", switchMode));
-    $("keywordInput").oninput = () => { if ($("keywordInput").value.trim() !== state.candidateQuery) { state.books = []; options($("bookSelect"), [], "도서 후보를 다시 조회하세요", () => ""); $("bookSelect").disabled = true; updateBook(); } readiness(); };
+    $("keywordInput").oninput = () => { if ($("keywordInput").value.trim() !== state.candidateQuery) { state.books = []; options($("bookSelect"), [], "도서 후보를 다시 조회하세요", () => ""); $("bookSelect").disabled = true; $("candidateHint").textContent = "후보는 한 번에 최대 30개까지 조회합니다."; updateBook(); } readiness(); };
     $("keywordInput").onkeydown = (e) => { if (e.key === "Enter") { e.preventDefault(); candidates(); } };
     $("isbnInput").oninput = readiness; $("bookSelect").onchange = () => { updateBook(); readiness(); };
     $("region").onchange = changeRegion; $("dtl").onchange = readiness;
-    $("availableOnly").onchange = renderResults; $("listView").onclick = () => setView("list"); $("mapView").onclick = () => setView("map");
+    $("availableOnly").onchange = () => { state.selected = null; renderResults(); }; $("listView").onclick = () => setView("list"); $("mapView").onclick = () => setView("map");
     $("refreshUsage").onclick = refreshUsage;
     document.querySelector('.text-link').onclick = () => { $("help").open = true; };
     document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshUsage(); });

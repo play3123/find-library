@@ -9,7 +9,12 @@ process.env.DATA4LIBRARY_AUTHKEY = "NEVER-EXPOSE-THIS-KEY";
 process.env.NLK_KEY = "test-nlk";
 const counts = new Map(), events = new Set();
 let upstreamFails = false;
+let candidateRequest;
 globalThis.fetch = async (url, options) => {
+  if (String(url).includes("nl.go.kr")) {
+    candidateRequest = new URL(url);
+    return { ok: true, text: async () => JSON.stringify({ result: Array.from({ length: 30 }, (_, i) => ({ titleInfo: `검색 후보 ${i + 1}`, isbn: "9788936433598" })) }) };
+  }
   if (url === "https://redis.test") {
     const [cmd, ...a] = JSON.parse(options.body); let result;
     if (cmd === "HMGET") result = counts.get(a[0]) || [null, null];
@@ -30,6 +35,9 @@ test("API counts upstream attempts including failures and redacts credentials", 
   const post = () => originalFetch(base + "/api/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ isbn13: "9788936433598", regionCode: "11", dtlCode: "11010" }) });
   try {
     assert.equal((await originalFetch(base + "/api/health")).status, 200);
+    const candidates = await (await originalFetch(base + "/api/books/candidates", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: "한강" }) })).json();
+    assert.equal(candidates.limit, 30); assert.equal(candidates.rows.length, 30);
+    assert.equal(candidateRequest.searchParams.get("pageNum"), "1"); assert.equal(candidateRequest.searchParams.get("pageSize"), "30");
     const first = await (await post()).json(); assert.equal(first.count, 1, JSON.stringify(first)); assert.equal(first.usage.total, 2);
     const cached = await (await post()).json(); assert.equal(cached.usage.total, 3);
     upstreamFails = true; const failed = await post(); assert.equal(failed.status, 502);
