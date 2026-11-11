@@ -102,9 +102,10 @@ label { display: block; font-size: 12px; color: var(--muted); font-weight: 400; 
 .empty-state h3 { font-size: 22px; color: var(--ink); margin-bottom: 14px; }
 .empty-state p { font-size: 14px; line-height: 1.9; }
 .map-pane { position: sticky; top: 22px; align-self: start; min-width: 0; }
-.map-heading { padding-bottom: 15px; }
+.map-heading { display: grid; align-items: start; padding-bottom: 20px; }
 .map-title-line,.map-meta-line { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .map-meta-line { margin-top: 7px; }
+.map-actions { display: flex; justify-content: flex-start; margin-top: 12px; }
 .map-heading h3 { font-size: 24px; }
 .map-heading p,.map-meta-line>span { color: var(--muted); font-size: 12px; }
 .map-meta-line>span { white-space: nowrap; }
@@ -171,6 +172,19 @@ label { display: block; font-size: 12px; color: var(--muted); font-weight: 400; 
 .loading-state p { font-size: 13px; color: var(--muted); }
 @keyframes pending { to { background: #dbe2d4; } }
 footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; padding: 20px 0 28px; }
+@media(min-width:721px) {
+  .results-layout:not([data-map-expanded=true]) .results-heading,
+  .results-layout:not([data-map-expanded=true]) .map-heading {
+    grid-template-rows: var(--result-title-height,auto) var(--result-meta-height,auto) var(--result-filter-height,0px) var(--result-actions-height,auto);
+    align-items: start;
+  }
+  .results-layout:not([data-map-expanded=true]) .results-title,
+  .results-layout:not([data-map-expanded=true]) .map-title-line { grid-row: 1; }
+  .results-layout:not([data-map-expanded=true]) #resultsSummary,
+  .results-layout:not([data-map-expanded=true]) .map-meta-line { grid-row: 2; }
+  .results-layout:not([data-map-expanded=true]) .result-copy,
+  .results-layout:not([data-map-expanded=true]) .map-actions { grid-row: 4; }
+}
 @media(max-width:1190px) {
   h1 { font-size: 39px; }
   .brand { font-size: 15px; }

@@ -7,7 +7,7 @@
     resultBook: null, mapExpanded: false, viewBeforeExpansion: "list" };
   const base = String(window.APP_CONFIG && window.APP_CONFIG.API_BASE || "").replace(/\/$/, "");
   let map, geocoder, mapInfo, mapResizeObserver, mapLayoutFrame, fitAfterLayout = false, revealAfterLayout = false, infoOpen = false,
-    overlays = [], points = new Map(), addressCache = new Map(), midnightTimer;
+    overlays = [], points = new Map(), addressCache = new Map(), midnightTimer, resultHeaderObserver, resultHeaderFrame;
   const fmt = new Intl.NumberFormat("ko-KR");
   function node(tag, className, text) {
     const el = document.createElement(tag);
@@ -83,6 +83,31 @@
       const fallback = node("div", "copy-fallback"); fallback.hidden = true;
       host.append(actions, status, fallback);
     });
+  }
+  function alignResultHeaders() {
+    cancelAnimationFrame(resultHeaderFrame);
+    resultHeaderFrame = requestAnimationFrame(() => {
+      if (state.mapExpanded || window.matchMedia("(max-width:720px)").matches) return;
+      const outerHeight = (selector) => {
+        const element = document.querySelector(selector); if (!element.getClientRects().length) return 0;
+        const style = getComputedStyle(element);
+        return element.getBoundingClientRect().height + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
+      };
+      const separateFilter = window.matchMedia("(max-width:980px)").matches;
+      const tracks = {
+        title: Math.max(outerHeight(".results-title"), outerHeight(".map-title-line"), separateFilter ? 0 : outerHeight("#resultControls")),
+        meta: Math.max(outerHeight("#resultsSummary"), outerHeight(".map-meta-line")),
+        filter: separateFilter ? outerHeight("#resultControls") : 0,
+        actions: Math.max(outerHeight("#resultBookTools"), outerHeight(".map-actions"))
+      };
+      Object.entries(tracks).forEach(([name, height]) => $("resultLayout").style.setProperty(`--result-${name}-height`, `${height}px`));
+    });
+  }
+  function initResultHeaderAlignment() {
+    resultHeaderObserver = new ResizeObserver(alignResultHeaders);
+    document.querySelectorAll(".results-title,#resultsSummary,#resultControls,#resultBookTools,.map-title-line,.map-meta-line,.map-actions").forEach((element) => resultHeaderObserver.observe(element));
+    window.addEventListener("resize", alignResultHeaders);
+    alignResultHeaders();
   }
   function updateBookTools() {
     ["resultBookTools", "mapBookTools"].forEach((id) => {
@@ -257,7 +282,7 @@
     $("toggleMapSize").textContent = expanded ? "지도 원래 크기로" : "지도 크게 보기";
     if (expanded) updateViewControls("map");
     else if (restoreView) updateViewControls(window.matchMedia("(max-width:720px)").matches ? "map" : state.viewBeforeExpansion);
-    updateMapSizeButton(); layoutMap();
+    updateMapSizeButton(); alignResultHeaders(); layoutMap();
     if (scroll) {
       $("toggleMapSize").focus({ preventScroll: true });
       requestAnimationFrame(() => document.querySelector(".map-pane").scrollIntoView({ block: "start", behavior: "instant" }));
@@ -380,6 +405,7 @@
   }
   async function init() {
     initBookTools();
+    initResultHeaderAlignment();
     $("searchForm").onsubmit = search; $("findBtn").onclick = candidates;
     document.querySelectorAll('[name="searchMode"]').forEach((el) => el.addEventListener("change", switchMode));
     $("keywordInput").oninput = () => { if ($("keywordInput").value.trim() !== state.candidateQuery) { state.books = []; options($("bookSelect"), [], "도서 후보를 다시 조회하세요", () => ""); $("bookSelect").disabled = true; $("candidateHint").textContent = "후보는 한 번에 최대 30개까지 조회합니다."; updateBook(); } readiness(); };
